@@ -120,6 +120,13 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
+## Build image
+
+```bash
+$ docker build -t cv-builder-be .
+$ docker compose -f docker-compose.prod.yml up -d --build
+```
+
 ## Run tests
 
 ```bash
