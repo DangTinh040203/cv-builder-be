@@ -1,0 +1,5 @@
+export enum Env {
+  NODE_ENV = 'NODE_ENV',
+  PORT = 'PORT',
+  MONGO_CONNECTION_STRING = 'MONGO_CONNECTION_STRING',
+}
