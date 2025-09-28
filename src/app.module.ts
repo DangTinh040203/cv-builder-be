@@ -1,11 +1,12 @@
 import KeyvRedis from '@keyv/redis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from '@/app.controller';
 import { AuthModule } from '@/auth/auth.module';
 import { envFilePath, validationSchema } from '@/common/configs/env.config';
+import { Env } from '@/common/constants/env.constant';
 import { DatabaseModule } from '@/database/database.module';
 
 @Module({
@@ -17,9 +18,9 @@ import { DatabaseModule } from '@/database/database.module';
     }),
     CacheModule.registerAsync({
       isGlobal: true,
-      imports: [ConfigModule],
-      useFactory: () => ({
-        stores: [new KeyvRedis('redis://localhost:6379')],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        stores: [new KeyvRedis(config.getOrThrow(Env.REDIS_CONNECTION_STRING))],
       }),
     }),
     DatabaseModule,

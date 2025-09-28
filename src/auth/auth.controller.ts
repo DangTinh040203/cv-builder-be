@@ -12,7 +12,7 @@ export class AuthController {
 
   @Post('sign-up')
   async signUpWithCredentials() {
-    const test = await this.cacheManager.set('key', 'value');
+    await this.cacheManager.set('key', 'value');
     return this.cacheManager.get('key');
   }
 
