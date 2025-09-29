@@ -4,7 +4,7 @@ import { HydratedDocument } from 'mongoose';
 export type AccountDocument = HydratedDocument<Account>;
 
 export enum AuthProvider {
-  local = 'local',
+  credential = 'credential',
   google = 'google',
   facebook = 'facebook',
   github = 'github',
@@ -21,7 +21,7 @@ export class Account {
   @Prop({ default: false })
   isVerified: boolean;
 
-  @Prop({ default: AuthProvider.local, enum: AuthProvider })
+  @Prop({ default: AuthProvider.credential, enum: AuthProvider })
   provider: AuthProvider;
 }
 

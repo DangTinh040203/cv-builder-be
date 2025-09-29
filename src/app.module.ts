@@ -2,6 +2,7 @@ import KeyvRedis from '@keyv/redis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 import { AppController } from '@/app.controller';
 import { AuthModule } from '@/auth/auth.module';
@@ -25,6 +26,7 @@ import { UserModule } from '@/user/user.module';
       }),
     }),
     DatabaseModule.forRootAsync(DbType.Mongo),
+    EventEmitterModule.forRoot({ global: true }),
     AuthModule,
     UserModule,
   ],
