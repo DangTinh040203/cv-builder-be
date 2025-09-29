@@ -1,4 +1,5 @@
 import {
+  ConsoleLogger,
   type INestApplication,
   Logger,
   ValidationPipe,
@@ -19,7 +20,12 @@ class BootstrapApplication {
   private configService: ConfigService;
 
   async run() {
-    this.app = await NestFactory.create(AppModule);
+    this.app = await NestFactory.create(AppModule, {
+      logger: new ConsoleLogger({
+        json: true,
+        colors: true,
+      }),
+    });
 
     this.app.setGlobalPrefix('api');
     this.app.enableVersioning({

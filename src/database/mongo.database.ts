@@ -1,7 +1,7 @@
 import { type DynamicModule, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { type Connection, ConnectionStates } from 'mongoose';
+import { type Connection } from 'mongoose';
 
 import { Env } from '@/common/constants/env.constant';
 import { type AbstractDbConnection } from '@/database/database.module';
@@ -14,18 +14,15 @@ export class MongoConnection implements AbstractDbConnection {
     return {
       uri,
       connectionFactory: (connection: Connection): Connection => {
-        const logger = new Logger('DatabaseConnectionFactory');
-
-        if (connection.readyState === ConnectionStates.connected) {
-          logger.log(`✅ [${nodeEnv}] Database connected successfully.`);
-        }
+        connection.on('connected', () => {
+          Logger.warn(`✅ [${nodeEnv}] Database connected.`);
+        });
         connection.on('disconnected', () => {
-          logger.warn(`❌ [${nodeEnv}] Database disconnected.`);
+          Logger.warn(`❌ [${nodeEnv}] Database disconnected.`);
         });
         connection.on('error', (error) => {
-          logger.error(`❌ [${nodeEnv}] Database connection error:`, error);
+          Logger.error(`❌ [${nodeEnv}] Database connection error:`, error);
         });
-
         return connection;
       },
     };

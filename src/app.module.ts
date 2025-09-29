@@ -7,7 +7,8 @@ import { AppController } from '@/app.controller';
 import { AuthModule } from '@/auth/auth.module';
 import { envFilePath, validationSchema } from '@/common/configs/env.config';
 import { Env } from '@/common/constants/env.constant';
-import { DatabaseModule } from '@/database/database.module';
+import { DatabaseModule, DbType } from '@/database/database.module';
+import { UserModule } from '@/user/user.module';
 
 @Module({
   imports: [
@@ -23,8 +24,9 @@ import { DatabaseModule } from '@/database/database.module';
         stores: [new KeyvRedis(config.getOrThrow(Env.REDIS_CONNECTION_STRING))],
       }),
     }),
-    DatabaseModule,
+    DatabaseModule.forRootAsync(DbType.Mongo),
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [],

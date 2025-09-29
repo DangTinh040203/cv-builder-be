@@ -1,32 +1,49 @@
-import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 
 import { AuthService } from '@/auth/auth.service';
+import { SignUpDto } from '@/auth/dto/sign-up.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
-  @Post('sign-up')
-  async signUpWithCredentials() {
-    await this.cacheManager.set('key', 'value');
-    return this.cacheManager.get('key');
+  @Post('sign-up/credentials')
+  async signUpWithCredentials(@Body() body: SignUpDto) {
+    return this.authService.signUpWithCredentials(body);
   }
 
-  async signInWithCredentials() {}
+  @Post('sign-in/credentials')
+  async signInWithCredentials() {
+    return this.authService.signInWithCredentials();
+  }
 
-  async signInWithOAuth() {}
+  @Post('sign-in/oauth')
+  async signInWithOAuth() {
+    return this.authService.signInWithOAuth();
+  }
 
-  async signOut() {}
+  @Post('sign-out')
+  async signOut() {
+    return this.authService.signOut();
+  }
 
-  async refreshToken() {}
+  @Post('refresh-token')
+  async refreshToken() {
+    return this.authService.refreshToken();
+  }
 
-  async changePassword() {}
+  @Post('password/change')
+  async changePassword() {
+    return this.authService.changePassword();
+  }
 
-  async resetPassword() {}
+  @Post('reset-password')
+  async resetPassword() {
+    return this.authService.resetPassword();
+  }
 
-  async verifyEmail() {}
+  @Post('verify-email')
+  async verifyEmail() {
+    return this.authService.verifyEmail();
+  }
 }
