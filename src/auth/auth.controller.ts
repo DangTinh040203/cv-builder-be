@@ -1,6 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 
 import { AuthService } from '@/auth/auth.service';
+import { SignInDto } from '@/auth/dto/sign-in.dto';
 import { SignUpDto } from '@/auth/dto/sign-up.dto';
 import { VerifyOtp } from '@/auth/dto/verify-otp-dto';
 
@@ -16,8 +17,8 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('sign-in/credentials')
-  async signInWithCredentials() {
-    return this.authService.signInWithCredentials();
+  async signInWithCredentials(@Body() body: SignInDto) {
+    return this.authService.signInWithCredentials(body);
   }
 
   @HttpCode(HttpStatus.OK)

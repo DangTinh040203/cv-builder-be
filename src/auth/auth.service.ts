@@ -4,12 +4,14 @@ import {
   GoneException,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectModel } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import { Model } from 'mongoose';
 
+import { SignInDto } from '@/auth/dto/sign-in.dto';
 import { SignUpDto } from '@/auth/dto/sign-up.dto';
 import { VerifyOtp } from '@/auth/dto/verify-otp-dto';
 import { UserOtp } from '@/auth/entities/user-otp.entity';
@@ -70,7 +72,24 @@ export class AuthService {
     );
   }
 
-  async signInWithCredentials() {}
+  async signInWithCredentials(body: SignInDto) {
+    const accountHolder = await this.accountModel
+      .findOne({
+        email: body.email,
+      })
+      .lean();
+
+    if (!accountHolder) {
+      throw new NotFoundException('Account does not exist');
+    }
+
+    if (
+      accountHolder.provider !== AuthProvider.credential ||
+      !accountHolder.isVerified
+    ) {
+      throw new BadRequestException('Invalid sign-in method');
+    }
+  }
 
   async signInWithOAuth() {}
 
@@ -83,12 +102,14 @@ export class AuthService {
   async resetPassword() {}
 
   async verifyEmail(body: VerifyOtp) {
-    const accountHolder = await this.accountModel.findOne({
-      email: body.email,
-    });
+    const accountHolder = await this.accountModel
+      .findOne({
+        email: body.email,
+      })
+      .lean();
 
     if (!accountHolder) {
-      throw new ConflictException('Account does not exist');
+      throw new NotFoundException('Account does not exist');
     }
 
     if (accountHolder.isVerified) {
@@ -117,15 +138,17 @@ export class AuthService {
     }
 
     // Query DB if not found in cache
-    const userOtp = await this.userOtpModel.findOne({ email: body.email });
+    const userOtp = await this.userOtpModel
+      .findOne({ email: body.email })
+      .lean();
 
     if (!userOtp) {
-      throw new GoneException('OTP expired or invalid');
+      throw new BadRequestException('OTP expired or invalid');
     }
 
     if (userOtp.expiresAt < new Date()) {
       await this.userOtpModel.deleteOne({ email: body.email });
-      throw new GoneException('OTP expired');
+      throw new BadRequestException('OTP expired');
     }
 
     if (userOtp.otp !== body.otp) {
