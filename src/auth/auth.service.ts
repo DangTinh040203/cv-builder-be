@@ -4,6 +4,7 @@ import { hash } from 'bcrypt';
 import { Model } from 'mongoose';
 
 import { SignUpDto } from '@/auth/dto/sign-up.dto';
+import { UserOtp } from '@/auth/entities/user-otp.entity';
 import { CacheService } from '@/common/utils/cache.service';
 import { UtilsService } from '@/common/utils/utils.service';
 import { Account, AuthProvider } from '@/user/entities/account.entity';
@@ -14,6 +15,7 @@ export class AuthService {
   constructor(
     @InjectModel(Account.name) private readonly accountModel: Model<Account>,
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(UserOtp.name) private userOtpModel: Model<UserOtp>,
     private readonly utilsService: UtilsService,
     private readonly cacheService: CacheService,
   ) {}
@@ -40,7 +42,16 @@ export class AuthService {
     const otpTtl = 5 * 60 * 1000; // 5 minutes
 
     const cacheKeyParts = ['Auth', 'Otp', body.email];
-    await this.cacheService.set(cacheKeyParts, otp, otpTtl);
+
+    await Promise.all([
+      this.cacheService.set(cacheKeyParts, otp, otpTtl),
+      this.userOtpModel.create({
+        email: body.email,
+        otp,
+        expiresAt: new Date(Date.now() + otpTtl),
+      }),
+    ]);
+
     Logger.log(`OTP for ${cacheKeyParts.join(':')} - ${otp}`);
   }
 
