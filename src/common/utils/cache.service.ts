@@ -19,4 +19,9 @@ export class CacheService {
     const raw = await this.cache.get<string>(key);
     return raw ? (JSON.parse(raw) as T) : null;
   }
+
+  async del(keyParts: Array<string>) {
+    const key = this.buildKey(keyParts);
+    await this.cache.del(key);
+  }
 }

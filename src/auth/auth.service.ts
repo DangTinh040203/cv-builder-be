@@ -1,10 +1,17 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  GoneException,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectModel } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import { Model } from 'mongoose';
 
 import { SignUpDto } from '@/auth/dto/sign-up.dto';
+import { VerifyOtp } from '@/auth/dto/verify-otp-dto';
 import { UserOtp } from '@/auth/entities/user-otp.entity';
 import { OtpCreatedEvent, OtpEvent } from '@/auth/events/otp-created.event';
 import { CacheService } from '@/common/utils/cache.service';
@@ -75,5 +82,62 @@ export class AuthService {
 
   async resetPassword() {}
 
-  async verifyEmail() {}
+  async verifyEmail(body: VerifyOtp) {
+    const accountHolder = await this.accountModel.findOne({
+      email: body.email,
+    });
+
+    if (!accountHolder) {
+      throw new ConflictException('Account does not exist');
+    }
+
+    if (accountHolder.isVerified) {
+      throw new ConflictException('Account already verified');
+    }
+
+    const cacheKeyParts = ['Auth', 'Otp', body.email];
+    const cachedOtp = await this.cacheService.get<string>(cacheKeyParts);
+
+    if (cachedOtp) {
+      if (cachedOtp !== body.otp) {
+        throw new BadRequestException('Invalid OTP');
+      }
+
+      await Promise.all([
+        this.cacheService.del(cacheKeyParts),
+        this.userOtpModel.deleteOne({ email: body.email }),
+        this.accountModel.updateOne(
+          { email: body.email },
+          { isVerified: true },
+        ),
+      ]);
+
+      Logger.log(`Email ${body.email} verified successfully via cache`);
+      return;
+    }
+
+    // Query DB if not found in cache
+    const userOtp = await this.userOtpModel.findOne({ email: body.email });
+
+    if (!userOtp) {
+      throw new GoneException('OTP expired or invalid');
+    }
+
+    if (userOtp.expiresAt < new Date()) {
+      await this.userOtpModel.deleteOne({ email: body.email });
+      throw new GoneException('OTP expired');
+    }
+
+    if (userOtp.otp !== body.otp) {
+      throw new BadRequestException('Invalid OTP');
+    }
+
+    await Promise.all([
+      this.cacheService.del(cacheKeyParts),
+      this.userOtpModel.deleteOne({ email: body.email }),
+      this.accountModel.updateOne({ email: body.email }, { isVerified: true }),
+    ]);
+
+    Logger.log(`Email ${body.email} verified successfully via DB`);
+  }
 }
