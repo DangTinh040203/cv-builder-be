@@ -4,8 +4,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthController } from '@/auth/auth.controller';
 import { AuthService } from '@/auth/auth.service';
 import { UserOtp, userOtpSchema } from '@/auth/entities/user-otp.entity';
+import { OtpListener } from '@/auth/listeners/otp.listener';
 import { CacheService } from '@/common/utils/cache.service';
 import { UtilsModule } from '@/common/utils/utils.module';
+import { EmailService } from '@/email/email.service';
 import { Account, AccountSchema } from '@/user/entities/account.entity';
 import { KeyToken, keyTokenSchema } from '@/user/entities/key-token.entity';
 import { User, UserSchema } from '@/user/entities/user.entity';
@@ -21,6 +23,12 @@ import { User, UserSchema } from '@/user/entities/user.entity';
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, MongooseModule, CacheService],
+  providers: [
+    AuthService,
+    MongooseModule,
+    CacheService,
+    OtpListener,
+    EmailService,
+  ],
 })
 export class AuthModule {}

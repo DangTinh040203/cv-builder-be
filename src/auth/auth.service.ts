@@ -1,10 +1,12 @@
 import { ConflictException, Injectable, Logger } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectModel } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import { Model } from 'mongoose';
 
 import { SignUpDto } from '@/auth/dto/sign-up.dto';
 import { UserOtp } from '@/auth/entities/user-otp.entity';
+import { OtpCreatedEvent, OtpEvent } from '@/auth/events/otp-created.event';
 import { CacheService } from '@/common/utils/cache.service';
 import { UtilsService } from '@/common/utils/utils.service';
 import { Account, AuthProvider } from '@/user/entities/account.entity';
@@ -18,6 +20,7 @@ export class AuthService {
     @InjectModel(UserOtp.name) private userOtpModel: Model<UserOtp>,
     private readonly utilsService: UtilsService,
     private readonly cacheService: CacheService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async signUpWithCredentials(body: SignUpDto) {
@@ -53,6 +56,11 @@ export class AuthService {
     ]);
 
     Logger.log(`OTP for ${cacheKeyParts.join(':')} - ${otp}`);
+
+    this.eventEmitter.emit(
+      OtpEvent.CREATED,
+      new OtpCreatedEvent(body.email, otp),
+    );
   }
 
   async signInWithCredentials() {}
