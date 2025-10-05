@@ -10,18 +10,19 @@ import { CacheService } from '@/common/utils/cache.service';
 import { UtilsModule } from '@/common/utils/utils.module';
 import { EmailService } from '@/email/email.service';
 import { Account, AccountSchema } from '@/user/entities/account.entity';
-import { KeyToken, keyTokenSchema } from '@/user/entities/key-token.entity';
 import { User, UserSchema } from '@/user/entities/user.entity';
+import { UserModule } from '@/user/user.module';
+import { UserService } from '@/user/user.service';
 
 @Module({
   imports: [
     UtilsModule,
     MongooseModule.forFeature([
-      { name: KeyToken.name, schema: keyTokenSchema },
       { name: Account.name, schema: AccountSchema },
       { name: User.name, schema: UserSchema },
       { name: UserOtp.name, schema: userOtpSchema },
     ]),
+    UserModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -31,6 +32,7 @@ import { User, UserSchema } from '@/user/entities/user.entity';
     OtpListener,
     EmailService,
     TokenService,
+    UserService,
   ],
 })
 export class AuthModule {}

@@ -21,24 +21,24 @@ import { Env } from '@/common/constants/env.constant';
 import { CacheService } from '@/common/utils/cache.service';
 import { UtilsService } from '@/common/utils/utils.service';
 import { Account, AuthProvider } from '@/user/entities/account.entity';
-import { User } from '@/user/entities/user.entity';
+import { UserService } from '@/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(Account.name) private readonly accountModel: Model<Account>,
-    @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(UserOtp.name) private userOtpModel: Model<UserOtp>,
     private readonly utilsService: UtilsService,
     private readonly cacheService: CacheService,
     private readonly tokenService: TokenService,
     private readonly configService: ConfigService,
+    private readonly userService: UserService,
     private eventEmitter: EventEmitter2,
   ) {}
 
   async signUpWithCredentials(body: SignUpDto) {
     const [userExist, accountExist] = await Promise.all([
-      this.userModel.exists({ email: body.email }),
+      this.userService.findByEmail(body.email),
       this.accountModel.exists({ email: body.email }),
     ]);
 
@@ -100,7 +100,13 @@ export class AuthService {
       throw new BadRequestException('Invalid credentials');
     }
 
-    // const tokens = await this.tokenService.tokensGenerator();
+    const user = await this.userService.findByEmail(body.email);
+    if (!user) {
+      throw new NotFoundException('User profile not found');
+    }
+
+    const tokens = await this.tokenService.tokensGenerator(user._id.toString());
+    return tokens;
   }
 
   async signInWithOAuth() {}
@@ -169,8 +175,8 @@ export class AuthService {
       this.cacheService.del(cacheKeyParts),
       this.userOtpModel.deleteOne({ email: body.email }),
       this.accountModel.updateOne({ email: body.email }, { isVerified: true }),
-      this.userModel.create({
-        avatar: this.configService.get(Env.DEFAULT_USER_AVATAR),
+      this.userService.createUser({
+        avatar: this.configService.getOrThrow(Env.DEFAULT_USER_AVATAR),
         displayName: body.email.split('@')[0],
         email: body.email,
       }),
