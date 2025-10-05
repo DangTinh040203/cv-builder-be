@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PassportModule } from '@nestjs/passport';
 
 import { AuthController } from '@/auth/auth.controller';
 import { UserOtp, userOtpSchema } from '@/auth/entities/user-otp.entity';
 import { OtpListener } from '@/auth/listeners/otp.listener';
 import { AuthService } from '@/auth/services/auth.service';
 import { TokenService } from '@/auth/services/token.service';
+import { AtStrategy } from '@/auth/strategies/at.strategy';
+import { AppStrategy } from '@/common/constants/auth.constant';
 import { CacheService } from '@/common/utils/cache.service';
 import { UtilsModule } from '@/common/utils/utils.module';
 import { EmailService } from '@/email/email.service';
@@ -16,13 +19,17 @@ import { UserService } from '@/user/user.service';
 
 @Module({
   imports: [
-    UtilsModule,
     MongooseModule.forFeature([
       { name: Account.name, schema: AccountSchema },
       { name: User.name, schema: UserSchema },
       { name: UserOtp.name, schema: userOtpSchema },
     ]),
     UserModule,
+    UtilsModule,
+    PassportModule.register({
+      defaultStrategy: AppStrategy.JWT,
+      session: false,
+    }),
   ],
   controllers: [AuthController],
   providers: [
@@ -33,6 +40,7 @@ import { UserService } from '@/user/user.service';
     EmailService,
     TokenService,
     UserService,
+    AtStrategy,
   ],
 })
 export class AuthModule {}
