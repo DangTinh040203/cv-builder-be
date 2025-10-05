@@ -49,13 +49,6 @@ export class AuthController {
     return this.authService.refreshToken();
   }
 
-  @UseGuards(JwtAuthGuard)
-  @HttpCode(HttpStatus.OK)
-  @Post('password/change')
-  async changePassword() {
-    return this.authService.changePassword();
-  }
-
   @HttpCode(HttpStatus.OK)
   @Post('reset-password')
   async resetPassword() {

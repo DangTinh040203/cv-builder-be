@@ -115,8 +115,6 @@ export class AuthService {
 
   async refreshToken() {}
 
-  async changePassword() {}
-
   async resetPassword() {}
 
   async verifyEmail(body: VerifyOtp) {
