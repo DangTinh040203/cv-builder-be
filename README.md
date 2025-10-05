@@ -1,98 +1,154 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# CV Builder API (NestJS)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend service for a CV/Resume builder platform. Provides authentication, user management, file uploads, email OTP verification, and integrations with MongoDB, Redis, RabbitMQ, and AWS S3.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Start Guide
 
-## Description
+### 1) Prerequisites
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Node.js 18+ and pnpm
+- Docker and Docker Compose
+- AWS credentials (for S3 uploads), SMTP credentials (for emails)
 
-## Project setup
+### 2) Install dependencies
 
 ```bash
-$ pnpm install
+pnpm install
 ```
 
-## Compile and run the project
+### 3) Environment variables
+
+Copy and fill your environment:
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+cp .env.sample .env
 ```
 
-## Run tests
+Key variables:
+
+- NODE_ENV: development | production | test
+- PORT: API port (e.g., 3000)
+- MONGO_CONNECTION_STRING: e.g. mongodb://cv_builder_user:admin@localhost:27017/cv_builder?authSource=admin
+- REDIS_CONNECTION_STRING: e.g. redis://localhost:6379
+- EMAIL_HOST, EMAIL_PORT, EMAIL_USERNAME, EMAIL_PASSWORD: SMTP settings
+- JWT_SECRET, JWT_EXPIRES_IN: access token secret and TTL (e.g. 15m)
+- JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRES_IN: refresh token secret and TTL (e.g. 7d)
+- AWS_ACCESS_KEY, AWS_SECRET_KEY: AWS credentials for S3
+- CLOUDFRONT_URL: optional CDN base URL
+- DEFAULT_USER_AVATAR: default avatar URL
+
+### 4) Start infrastructure (MongoDB, Redis, RabbitMQ)
 
 ```bash
+docker compose up -d
+```
+
+- MongoDB: localhost:27017 (cv_builder_user/admin)
+- Redis: localhost:6379
+- RabbitMQ UI: http://localhost:15672 (admin/admin)
+
+### 5) Run the server
+
+```bash
+# development (watch)
+pnpm run start:dev
+
+# development (single run)
+pnpm run start
+
+# production
+pnpm run build
+pnpm run start:prod
+```
+
+- Base URL: http://localhost:PORT
+- API prefix: /api
+- Versioned routes: /api/v1/...
+
+### 6) Quality and tests
+
+```bash
+# lint and auto-fix
+pnpm run lint
+
+# format
+pnpm run format
+
 # unit tests
-$ pnpm run test
+pnpm run test
 
 # e2e tests
-$ pnpm run test:e2e
+pnpm run test:e2e
 
-# test coverage
-$ pnpm run test:cov
+# coverage
+pnpm run test:cov
 ```
 
-## Deployment
+## Tech Stack
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- Language: TypeScript
+- Framework: NestJS 11 (@nestjs/common, core, config, event-emitter, microservices, platform-express)
+- Runtime HTTP:
+  - Global prefix: /api
+  - URI versioning: v1
+  - Validation: class-validator + class-transformer (whitelist, transform)
+  - Filters/Middleware: global HttpExceptionFilter, CORS, Helmet, Morgan, cookie-parser
+- Auth: JWT (access/refresh) with @nestjs/jwt, passport-jwt, guards/strategies and cookie parsing
+- Database: MongoDB 6 with mongoose
+- Cache/Storage:
+  - Redis (cache-manager, keyv with @keyv/redis)
+  - AWS S3 (@aws-sdk/client-s3, presigner)
+  - Optional CloudFront distribution URL
+- Messaging/Jobs:
+  - RabbitMQ (dockerized, Nest microservices ready)
+  - BullMQ (Redis-backed job queues)
+- Email: @nestjs-modules/mailer with Handlebars templates (OTP)
+- Tooling: ESLint 9, Prettier 3, Jest 30, ts-jest, ts-node, tsconfig-paths
+- Security: Helmet, CORS, Joi-based config validation
+- Logging: Nest ConsoleLogger (json enabled), Morgan\\
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Health Check
+
+- Endpoint: `GET /api/v1/health`
+- Status: `200 OK`
+- Payload:
+
+```json
+{
+  "status": "ok",
+  "timestamp": "2025-01-01T00:00:00.000Z",
+  "uptime": 123.45
+}
+```
+
+- Example:
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+curl -s http://localhost:$PORT/api/v1/health
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## API Conventions
 
-## Resources
+- Global prefix: `/api`, Version: `v1` → e.g., `/api/v1/...`
+- Requests/Responses: JSON
+- Validation: DTOs with class-validator, transformation enabled
 
-Check out a few resources that may come in handy when working with NestJS:
+## Scripts
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- build: nest build
+- start: nest start
+- start:dev: nest start --watch
+- start:prod: node dist/main
+- lint: eslint "{src,apps,libs,test}/\*_/_.ts" --fix
+- format: prettier write src, test, libs
+- test: jest (plus test:e2e, test:cov)
 
-## Support
+## Docker Services
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Defined in `docker-compose.yml`:
 
-## Stay in touch
+- mongodb:6.0 with healthcheck and volume
+- redis:7-alpine with healthcheck and volume
+- rabbitmq:3-management with UI on 15672
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+License: UNLICENSED

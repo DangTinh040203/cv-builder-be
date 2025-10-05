@@ -12,7 +12,6 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import { AppModule } from '@/app.module';
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { Env } from '@/common/constants/env.constant';
 import { HttpExceptionFilter } from '@/common/filters/exception.filter';
 
