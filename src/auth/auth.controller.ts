@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
+import { ResetPasswordDto } from '@/auth/dto/reset-password.dto';
 import { SignInDto } from '@/auth/dto/sign-in.dto';
 import { SignUpDto } from '@/auth/dto/sign-up.dto';
 import { VerifyOtp } from '@/auth/dto/verify-otp-dto';
@@ -53,10 +54,11 @@ export class AuthController {
     return this.authService.refreshToken(user._id, user.refreshToken);
   }
 
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('reset-password')
-  async resetPassword() {
-    return this.authService.resetPassword();
+  async resetPassword(@Body() body: ResetPasswordDto) {
+    return this.authService.resetPassword(body.email);
   }
 
   @UseGuards(JwtAuthGuard)

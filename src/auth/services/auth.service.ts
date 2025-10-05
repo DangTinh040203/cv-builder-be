@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
@@ -168,7 +169,40 @@ export class AuthService {
     return tokens;
   }
 
-  async resetPassword() {}
+  async resetPassword(email: string) {
+    const user = await this.userService.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const cacheKeyParts = ['Auth', 'Otp', 'reset-password', user.email];
+    const isReset = await this.cacheService.get<boolean>(cacheKeyParts);
+
+    if (isReset) {
+      throw new BadRequestException(
+        'Password reset already requested. Please check your email.',
+      );
+    }
+
+    const otp = this.utilsService.generateSecureOtp(6);
+    const otpTtl = 5 * 60 * 1000; // 5 minutes
+
+    await Promise.all([
+      this.cacheService.set(cacheKeyParts, true, otpTtl),
+      this.cacheService.set(['Auth', 'Otp', email], otp, otpTtl),
+      this.userOtpModel.create({
+        email: user.email,
+        otp,
+        expiresAt: new Date(Date.now() + otpTtl),
+      }),
+    ]);
+
+    Logger.log(`OTP for ${cacheKeyParts.join(':')} - ${otp}`);
+    this.eventEmitter.emit(
+      OtpEvent.CREATED,
+      new OtpCreatedEvent(user.email, otp),
+    );
+  }
 
   async verifyEmail(body: VerifyOtp) {
     const accountHolder = await this.accountModel
