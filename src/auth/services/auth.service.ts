@@ -138,7 +138,35 @@ export class AuthService {
     Logger.log(`User ${userId} signed out successfully`);
   }
 
-  async refreshToken() {}
+  async refreshToken(userId: string, refreshToken: string) {
+    const keyStore = await this.keyStoreModel.findOne({ userId });
+
+    if (!keyStore) {
+      throw new NotFoundException('No key store found for this user');
+    }
+
+    if (keyStore.refreshToken !== refreshToken) {
+      throw new BadRequestException('Invalid refresh token');
+    }
+
+    const user = await this.userService.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const tokens = await this.tokenService.tokensGenerator(userId);
+
+    await this.keyStoreModel.findOneAndUpdate(
+      { userId },
+      {
+        $set: { refreshToken: tokens.refreshToken },
+        $push: { refreshTokenUsed: refreshToken },
+      },
+    );
+
+    Logger.log(`User ${userId} refreshed token successfully`);
+    return tokens;
+  }
 
   async resetPassword() {}
 

@@ -12,7 +12,9 @@ import { SignInDto } from '@/auth/dto/sign-in.dto';
 import { SignUpDto } from '@/auth/dto/sign-up.dto';
 import { VerifyOtp } from '@/auth/dto/verify-otp-dto';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { JwtAuthGuardRefreshJWT } from '@/auth/guards/refresh-jwt-auth.guard';
 import { AuthService } from '@/auth/services/auth.service';
+import { JwtPayload } from '@/common/types/express';
 
 @Controller('auth')
 export class AuthController {
@@ -43,11 +45,12 @@ export class AuthController {
     return this.authService.signOut(req.user!._id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuardRefreshJWT)
   @HttpCode(HttpStatus.CREATED)
   @Post('refresh-token')
-  async refreshToken() {
-    return this.authService.refreshToken();
+  async refresh(@Req() req: Express.Request) {
+    const user = req.user as JwtPayload & { refreshToken: string };
+    return this.authService.refreshToken(user._id, user.refreshToken);
   }
 
   @HttpCode(HttpStatus.OK)

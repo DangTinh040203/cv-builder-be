@@ -9,6 +9,7 @@ import { OtpListener } from '@/auth/listeners/otp.listener';
 import { AuthService } from '@/auth/services/auth.service';
 import { TokenService } from '@/auth/services/token.service';
 import { AtStrategy } from '@/auth/strategies/at.strategy';
+import { RtStrategy } from '@/auth/strategies/rt.strategy';
 import { AppStrategy } from '@/common/constants/auth.constant';
 import { CacheService } from '@/common/utils/cache.service';
 import { UtilsModule } from '@/common/utils/utils.module';
@@ -43,6 +44,7 @@ import { UserService } from '@/user/user.service';
     TokenService,
     UserService,
     AtStrategy,
+    RtStrategy,
   ],
 })
 export class AuthModule {}

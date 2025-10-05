@@ -25,7 +25,7 @@ export class TokenService {
       this.jwtService.signAsync(
         { _id: userId },
         {
-          secret: this.configService.get(Env.JWT_SECRET),
+          secret: this.configService.get(Env.JWT_REFRESH_SECRET),
           expiresIn: this.configService.get(Env.JWT_REFRESH_EXPIRES_IN),
         },
       ),
