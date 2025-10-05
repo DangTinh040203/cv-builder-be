@@ -5,9 +5,10 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectModel } from '@nestjs/mongoose';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { Model } from 'mongoose';
 
 import { SignInDto } from '@/auth/dto/sign-in.dto';
@@ -15,6 +16,8 @@ import { SignUpDto } from '@/auth/dto/sign-up.dto';
 import { VerifyOtp } from '@/auth/dto/verify-otp-dto';
 import { UserOtp } from '@/auth/entities/user-otp.entity';
 import { OtpCreatedEvent, OtpEvent } from '@/auth/events/otp-created.event';
+import { TokenService } from '@/auth/services/token.service';
+import { Env } from '@/common/constants/env.constant';
 import { CacheService } from '@/common/utils/cache.service';
 import { UtilsService } from '@/common/utils/utils.service';
 import { Account, AuthProvider } from '@/user/entities/account.entity';
@@ -28,6 +31,8 @@ export class AuthService {
     @InjectModel(UserOtp.name) private userOtpModel: Model<UserOtp>,
     private readonly utilsService: UtilsService,
     private readonly cacheService: CacheService,
+    private readonly tokenService: TokenService,
+    private readonly configService: ConfigService,
     private eventEmitter: EventEmitter2,
   ) {}
 
@@ -84,10 +89,18 @@ export class AuthService {
 
     if (
       accountHolder.provider !== AuthProvider.credential ||
-      !accountHolder.isVerified
+      !accountHolder.isVerified ||
+      !accountHolder.password
     ) {
       throw new BadRequestException('Invalid sign-in method');
     }
+
+    const validPassword = await compare(body.password, accountHolder.password);
+    if (!validPassword) {
+      throw new BadRequestException('Invalid credentials');
+    }
+
+    // const tokens = await this.tokenService.tokensGenerator();
   }
 
   async signInWithOAuth() {}
@@ -133,31 +146,34 @@ export class AuthService {
       ]);
 
       Logger.log(`Email ${body.email} verified successfully via cache`);
-      return;
-    }
+    } else {
+      const userOtp = await this.userOtpModel
+        .findOne({ email: body.email })
+        .lean();
 
-    // Query DB if not found in cache
-    const userOtp = await this.userOtpModel
-      .findOne({ email: body.email })
-      .lean();
+      if (!userOtp) {
+        throw new BadRequestException('OTP expired or invalid');
+      }
 
-    if (!userOtp) {
-      throw new BadRequestException('OTP expired or invalid');
-    }
+      if (userOtp.expiresAt < new Date()) {
+        await this.userOtpModel.deleteOne({ email: body.email });
+        throw new BadRequestException('OTP expired');
+      }
 
-    if (userOtp.expiresAt < new Date()) {
-      await this.userOtpModel.deleteOne({ email: body.email });
-      throw new BadRequestException('OTP expired');
-    }
-
-    if (userOtp.otp !== body.otp) {
-      throw new BadRequestException('Invalid OTP');
+      if (userOtp.otp !== body.otp) {
+        throw new BadRequestException('Invalid OTP');
+      }
     }
 
     await Promise.all([
       this.cacheService.del(cacheKeyParts),
       this.userOtpModel.deleteOne({ email: body.email }),
       this.accountModel.updateOne({ email: body.email }, { isVerified: true }),
+      this.userModel.create({
+        avatar: this.configService.get(Env.DEFAULT_USER_AVATAR),
+        displayName: body.email.split('@')[0],
+        email: body.email,
+      }),
     ]);
 
     Logger.log(`Email ${body.email} verified successfully via DB`);

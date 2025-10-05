@@ -78,6 +78,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-member-access': 0,
       'import/no-unresolved': 0,
       'import/extensions': 0,
+      '@typescript-eslint/no-unsafe-argument': 0,
 
       'prettier/prettier': 'warn',
       '@typescript-eslint/no-unsafe-return': 'warn',
@@ -89,7 +90,6 @@ export default tseslint.config(
       'simple-import-sort/exports': 'warn',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn',
       '@typescript-eslint/consistent-type-imports': [
         'warn',
         {

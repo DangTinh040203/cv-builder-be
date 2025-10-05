@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { AuthController } from '@/auth/auth.controller';
-import { AuthService } from '@/auth/auth.service';
 import { UserOtp, userOtpSchema } from '@/auth/entities/user-otp.entity';
 import { OtpListener } from '@/auth/listeners/otp.listener';
+import { AuthService } from '@/auth/services/auth.service';
+import { TokenService } from '@/auth/services/token.service';
 import { CacheService } from '@/common/utils/cache.service';
 import { UtilsModule } from '@/common/utils/utils.module';
 import { EmailService } from '@/email/email.service';
@@ -29,6 +30,7 @@ import { User, UserSchema } from '@/user/entities/user.entity';
     CacheService,
     OtpListener,
     EmailService,
+    TokenService,
   ],
 })
 export class AuthModule {}

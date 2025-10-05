@@ -3,6 +3,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { JwtModule } from '@nestjs/jwt';
 
 import { MailerConfig } from '@/common/configs/email.config';
 import { envFilePath, validationSchema } from '@/common/configs/env.config';
@@ -26,6 +27,17 @@ import { DatabaseModule, DbType } from '@/database/database.module';
     DatabaseModule.forRootAsync(DbType.Mongo),
     EventEmitterModule.forRoot({ global: true }),
     MailerConfig,
+    JwtModule.registerAsync({
+      imports: [],
+      global: true,
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>(Env.JWT_SECRET),
+        signOptions: {
+          expiresIn: configService.get<string>(Env.JWT_EXPIRES_IN),
+        },
+      }),
+    }),
   ],
 })
 export class AppConfigModule {}

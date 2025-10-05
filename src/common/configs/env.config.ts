@@ -11,6 +11,20 @@ export const validationSchema = Joi.object({
   [Env.EMAIL_PORT]: Joi.number().required(),
   [Env.EMAIL_USERNAME]: Joi.string().required(),
   [Env.EMAIL_PASSWORD]: Joi.string().required(),
+
+  [Env.JWT_SECRET]: Joi.string().required(),
+  [Env.JWT_EXPIRES_IN]: Joi.string().required(),
+
+  [Env.JWT_REFRESH_SECRET]: Joi.string().required(),
+  [Env.JWT_REFRESH_EXPIRES_IN]: Joi.string().required(),
+
+  [Env.AWS_ACCESS_KEY]: Joi.string().required(),
+  [Env.AWS_SECRET_KEY]: Joi.string().required(),
+  [Env.AWS_REGION]: Joi.string().required(),
+  [Env.AWS_BUCKET_NAME]: Joi.string().required(),
+  [Env.CLOUDFRONT_URL]: Joi.string().uri().required(),
+
+  [Env.DEFAULT_USER_AVATAR]: Joi.string().uri().required(),
 });
 
 export const envFilePath =
