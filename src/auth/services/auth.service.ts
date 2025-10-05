@@ -14,6 +14,7 @@ import { Model } from 'mongoose';
 import { SignInDto } from '@/auth/dto/sign-in.dto';
 import { SignUpDto } from '@/auth/dto/sign-up.dto';
 import { VerifyOtp } from '@/auth/dto/verify-otp-dto';
+import { KeyStore } from '@/auth/entities/key-store.entity';
 import { UserOtp } from '@/auth/entities/user-otp.entity';
 import { OtpCreatedEvent, OtpEvent } from '@/auth/events/otp-created.event';
 import { TokenService } from '@/auth/services/token.service';
@@ -28,6 +29,7 @@ export class AuthService {
   constructor(
     @InjectModel(Account.name) private readonly accountModel: Model<Account>,
     @InjectModel(UserOtp.name) private userOtpModel: Model<UserOtp>,
+    @InjectModel(KeyStore.name) private keyStoreModel: Model<KeyStore>,
     private readonly utilsService: UtilsService,
     private readonly cacheService: CacheService,
     private readonly tokenService: TokenService,
@@ -106,12 +108,35 @@ export class AuthService {
     }
 
     const tokens = await this.tokenService.tokensGenerator(user._id.toString());
+
+    await this.keyStoreModel.findOneAndUpdate(
+      { userId: user._id },
+      {
+        $set: {
+          refreshToken: tokens.refreshToken,
+        },
+        $setOnInsert: {
+          userId: user._id,
+          refreshTokenUsed: [],
+        },
+      },
+      { upsert: true, new: true, setDefaultsOnInsert: true },
+    );
+
     return tokens;
   }
 
   async signInWithOAuth() {}
 
-  async signOut() {}
+  async signOut(userId: string) {
+    const deleted = await this.keyStoreModel.deleteOne({ userId });
+
+    if (deleted.deletedCount === 0) {
+      throw new NotFoundException('No active session found for this user');
+    }
+
+    Logger.log(`User ${userId} signed out successfully`);
+  }
 
   async refreshToken() {}
 

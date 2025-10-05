@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 
 import { AuthController } from '@/auth/auth.controller';
+import { KeyStore, keyStoreSchema } from '@/auth/entities/key-store.entity';
 import { UserOtp, userOtpSchema } from '@/auth/entities/user-otp.entity';
 import { OtpListener } from '@/auth/listeners/otp.listener';
 import { AuthService } from '@/auth/services/auth.service';
@@ -23,6 +24,7 @@ import { UserService } from '@/user/user.service';
       { name: Account.name, schema: AccountSchema },
       { name: User.name, schema: UserSchema },
       { name: UserOtp.name, schema: userOtpSchema },
+      { name: KeyStore.name, schema: keyStoreSchema },
     ]),
     UserModule,
     UtilsModule,

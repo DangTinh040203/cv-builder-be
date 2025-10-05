@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 
@@ -38,8 +39,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('sign-out')
-  async signOut() {
-    return this.authService.signOut();
+  async signOut(@Req() req: Express.Request) {
+    return this.authService.signOut(req.user!._id);
   }
 
   @UseGuards(JwtAuthGuard)

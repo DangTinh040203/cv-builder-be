@@ -1,4 +1,5 @@
 {
+    "include": ["src"],
   "compilerOptions": {
     "module": "nodenext",
     "moduleResolution": "nodenext",
@@ -12,6 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2023",
     "sourceMap": true,
+    "typeRoots": ["./node_modules/@types", "./src/common/types"],
     "outDir": "./dist",
     "paths": {
       "@/*": ["./src/*"]
@@ -22,6 +24,6 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
   }
 }
