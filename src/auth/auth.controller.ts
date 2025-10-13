@@ -61,7 +61,6 @@ export class AuthController {
     return this.authService.resetPassword(body.email);
   }
 
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('verify-email')
   async verifyEmail(@Body() body: VerifyOtp) {
