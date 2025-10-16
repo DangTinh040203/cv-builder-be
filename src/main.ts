@@ -61,7 +61,11 @@ class BootstrapApplication {
     );
 
     this.app.useGlobalFilters(new HttpExceptionFilter());
-    this.app.enableCors({});
+    this.app.enableCors({
+      origin: this.configService.getOrThrow<string>(Env.FRONTEND_ORIGIN),
+      credentials: true,
+    });
+
     this.app.use(helmet());
     this.app.use(morgan('dev'));
   }

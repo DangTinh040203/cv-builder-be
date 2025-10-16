@@ -7,6 +7,8 @@ export const validationSchema = Joi.object({
   [Env.MONGO_CONNECTION_STRING]: Joi.string().uri().required(),
   [Env.REDIS_CONNECTION_STRING]: Joi.string().uri().required(),
 
+  [Env.FRONTEND_ORIGIN]: Joi.string().uri().required(),
+
   [Env.EMAIL_HOST]: Joi.string().required(),
   [Env.EMAIL_PORT]: Joi.number().required(),
   [Env.EMAIL_USERNAME]: Joi.string().required(),
