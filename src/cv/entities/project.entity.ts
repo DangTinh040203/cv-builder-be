@@ -5,13 +5,16 @@ import { Information } from '@/cv/entities/information.entity';
 @Schema({ timestamps: true })
 export class Project {
   @Prop({ required: true })
-  title: string;
+  name: string;
 
-  @Prop({ required: false })
-  subTitle: string;
+  @Prop({ required: true })
+  startDate: Date;
+
+  @Prop()
+  endDate: Date | null;
 
   @Prop({ required: true, type: [Information], default: [] })
-  information: Information[];
+  information: Array<Information>;
 
   @Prop({ required: true })
   order: number;
