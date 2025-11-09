@@ -38,7 +38,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       path: request.url,
     };
 
-    console.log('🚀 ~ HttpExceptionFilter:', errorResponse);
     response.status(status).json(errorResponse);
   }
 
