@@ -6,6 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { ErrorResponse } from '@/common/types/response';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -24,18 +25,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
         ? exception.getResponse()
         : { message: 'Internal server error' };
 
-    let message: string | string[] | object = 'Unexpected error';
-    if (typeof resBody === 'string') {
-      message = resBody;
-    } else if (typeof resBody === 'object' && resBody !== null) {
-      if ('message' in resBody) {
-        message = (resBody as { message: string | string[] }).message;
-      } else {
-        message = resBody;
-      }
-    }
+    const message = this.extractMessage(resBody);
 
-    const errorResponse = {
+    const errorResponse: ErrorResponse = {
       statusCode: status,
       error:
         exception instanceof HttpException
@@ -46,6 +38,18 @@ export class HttpExceptionFilter implements ExceptionFilter {
       path: request.url,
     };
 
+    console.log('🚀 ~ HttpExceptionFilter:', errorResponse);
     response.status(status).json(errorResponse);
+  }
+
+  private extractMessage(resBody: unknown): string | string[] | object {
+    if (typeof resBody === 'string') return resBody;
+
+    if (typeof resBody === 'object' && resBody !== null) {
+      const body = resBody as Record<string, any>;
+      return body.message ?? body;
+    }
+
+    return 'Unexpected error';
   }
 }
