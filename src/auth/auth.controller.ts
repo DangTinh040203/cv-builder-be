@@ -15,7 +15,7 @@ import { VerifyOtp } from '@/auth/dto/verify-otp-dto';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { JwtAuthGuardRefreshJWT } from '@/auth/guards/refresh-jwt-auth.guard';
 import { AuthService } from '@/auth/services/auth.service';
-import { JwtPayload } from '@/common/types/express';
+import { JwtPayload } from '@/lib/types/express';
 
 @Controller('auth')
 export class AuthController {

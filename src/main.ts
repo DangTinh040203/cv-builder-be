@@ -12,8 +12,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import { AppModule } from '@/app.module';
-import { Env } from '@/common/constants/env.constant';
-import { HttpExceptionFilter } from '@/common/filters/exception.filter';
+import { Env } from '@/lib/constants/env.constant';
+import { HttpExceptionFilter } from '@/lib/filters/exception.filter';
 
 class BootstrapApplication {
   app: INestApplication;

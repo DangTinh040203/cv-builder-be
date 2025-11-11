@@ -13,7 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2023",
     "sourceMap": true,
-    "typeRoots": ["./node_modules/@types", "./src/common/types"],
+    "typeRoots": ["./node_modules/@types", "src/lib/types"],
     "outDir": "./dist",
     "paths": {
       "@/*": ["./src/*"]

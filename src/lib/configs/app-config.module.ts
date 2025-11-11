@@ -5,10 +5,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { JwtModule } from '@nestjs/jwt';
 
-import { MailerConfig } from '@/common/configs/email.config';
-import { envFilePath, validationSchema } from '@/common/configs/env.config';
-import { Env } from '@/common/constants/env.constant';
 import { DatabaseModule, DbType } from '@/database/database.module';
+import { MailerConfig } from '@/lib/configs/email.config';
+import { envFilePath, validationSchema } from '@/lib/configs/env.config';
+import { Env } from '@/lib/constants/env.constant';
 
 @Module({
   imports: [

@@ -4,9 +4,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { AppStrategy } from '@/common/constants/auth.constant';
-import { Env } from '@/common/constants/env.constant';
-import { JwtPayload } from '@/common/types/express';
+import { AppStrategy } from '@/lib/constants/auth.constant';
+import { Env } from '@/lib/constants/env.constant';
+import { JwtPayload } from '@/lib/types/express';
 
 @Injectable()
 export class RtStrategy extends PassportStrategy(

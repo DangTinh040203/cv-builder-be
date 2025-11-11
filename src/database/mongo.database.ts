@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { type Connection } from 'mongoose';
 
-import { Env } from '@/common/constants/env.constant';
 import { type AbstractDbConnection } from '@/database/database.module';
+import { Env } from '@/lib/constants/env.constant';
 
 export class MongoConnection implements AbstractDbConnection {
   private databaseConnectionFactory(config: ConfigService) {

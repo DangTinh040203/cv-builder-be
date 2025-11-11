@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { Env } from '@/common/constants/env.constant';
+import { Env } from '@/lib/constants/env.constant';
 import { User } from '@/user/entities/user.entity';
 
 @Injectable()

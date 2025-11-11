@@ -12,7 +12,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import slugify from 'slugify';
 
-import { Env } from '@/common/constants/env.constant';
+import { Env } from '@/lib/constants/env.constant';
 import { UploadFileServiceAbstract } from '@/upload/services/upload.abstract';
 
 @Injectable()

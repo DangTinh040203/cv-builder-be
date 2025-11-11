@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-import { Env } from '@/common/constants/env.constant';
+import { Env } from '@/lib/constants/env.constant';
 
 export const validationSchema = Joi.object({
   [Env.PORT]: Joi.number().required(),

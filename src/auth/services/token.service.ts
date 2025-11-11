@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
-import { Env } from '@/common/constants/env.constant';
+import { Env } from '@/lib/constants/env.constant';
 
 @Injectable()
 export class TokenService {

@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { AppStrategy } from '@/common/constants/auth.constant';
-import { Env } from '@/common/constants/env.constant';
+import { AppStrategy } from '@/lib/constants/auth.constant';
+import { Env } from '@/lib/constants/env.constant';
 
 export enum TokenKeys {
   ACCESS_TOKEN = 'access_token',

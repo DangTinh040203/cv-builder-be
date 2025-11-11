@@ -2,7 +2,7 @@ import { type DynamicModule } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
 
-import { Env } from '@/common/constants/env.constant';
+import { Env } from '@/lib/constants/env.constant';
 
 export const MailerConfig: DynamicModule = MailerModule.forRootAsync({
   inject: [ConfigService],
