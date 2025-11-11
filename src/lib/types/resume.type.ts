@@ -37,16 +37,22 @@ export interface Skill {
 export enum SectionType {
   WORK_EXPERIENCE = 'WORK_EXPERIENCE',
   EDUCATION = 'EDUCATION',
-  SKILLS = 'SKILLS',
-  PROJECTS = 'PROJECTS',
-  CERTIFICATIONS = 'CERTIFICATIONS',
-  LANGUAGES = 'LANGUAGES',
+  SKILL = 'SKILL',
+  PROJECT = 'PROJECT',
+  CERTIFICATION = 'CERTIFICATION',
+  LANGUAGE = 'LANGUAGE',
 }
 
-export interface ResumeSection<T> {
+export class ResumeSection<T> {
   order: number;
   type: SectionType;
   content: T;
+
+  constructor(order: number, type: SectionType, content: T) {
+    this.order = order;
+    this.type = type;
+    this.content = content;
+  }
 }
 
 export interface Section {

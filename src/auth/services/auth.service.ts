@@ -24,6 +24,7 @@ import {
   RESUME_INFORMATION_SEED_DATA,
   SUB_TITLE_SEED_DATA,
 } from '@/lib/constants/resume.constant';
+import { ResumeSection, SectionType } from '@/lib/types/resume.type';
 import { CacheService } from '@/lib/utils/cache.service';
 import { UtilsService } from '@/lib/utils/utils.service';
 import { Account, AuthProvider } from '@/user/entities/account.entity';
@@ -280,7 +281,12 @@ export class AuthService {
       avatar: newUser.avatar,
       overview: OVERVIEW_SEED_DATA,
       information: RESUME_INFORMATION_SEED_DATA,
-      section: {},
+      section: {
+        educations: new ResumeSection(1, SectionType.EDUCATION, []),
+        workExperiences: new ResumeSection(2, SectionType.WORK_EXPERIENCE, []),
+        projects: new ResumeSection(3, SectionType.PROJECT, []),
+        skills: new ResumeSection(4, SectionType.SKILL, []),
+      },
     });
 
     Logger.log(`Email ${body.email} verified successfully via DB`);

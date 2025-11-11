@@ -1,4 +1,4 @@
-import { type Information } from '@/lib/types/resume';
+import { type Information } from '@/lib/types/resume.type';
 
 export const SUB_TITLE_SEED_DATA = 'Professional';
 

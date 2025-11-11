@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-import { Information, type Section } from '@/lib/types/resume';
+import { Information, type Section } from '@/lib/types/resume.type';
 import { User } from '@/user/entities/user.entity';
 
 @Schema({ timestamps: true })
