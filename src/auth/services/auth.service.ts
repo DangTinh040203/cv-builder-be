@@ -19,6 +19,11 @@ import { UserOtp } from '@/auth/entities/user-otp.entity';
 import { OtpCreatedEvent, OtpEvent } from '@/auth/events/otp-created.event';
 import { TokenService } from '@/auth/services/token.service';
 import { Env } from '@/lib/constants/env.constant';
+import {
+  OVERVIEW_SEED_DATA,
+  RESUME_INFORMATION_SEED_DATA,
+  SUB_TITLE_SEED_DATA,
+} from '@/lib/constants/resume.constant';
 import { CacheService } from '@/lib/utils/cache.service';
 import { UtilsService } from '@/lib/utils/utils.service';
 import { Account, AuthProvider } from '@/user/entities/account.entity';
@@ -270,43 +275,11 @@ export class AuthService {
 
     await this.resumeService.create({
       userId: newUser._id.toString(),
-      title: `${newUser.displayName}'s Resume`,
-      subTitle: 'My Professional Resume',
+      title: newUser.displayName,
+      subTitle: SUB_TITLE_SEED_DATA,
       avatar: newUser.avatar,
-      overview:
-        'Over 3 years of experience as a developer with strong communication skills and a quick ability to learn and adapt to new technologies. Specializing in Front-end development and Back-end development, with a solid understanding of modern web technologies. Passionate about building scalable, high-performance web applications and continuously improving skills to stay up to date with the latest industry trends.',
-      information: [
-        {
-          label: 'Email',
-          value: 'your_email@example.com',
-          order: 1,
-        },
-        {
-          label: 'Phone',
-          value: '+123 456 7890',
-          order: 2,
-        },
-        {
-          label: 'Address',
-          value: '123 Main St, City, Country',
-          order: 3,
-        },
-        {
-          label: 'LinkedIn',
-          value: 'www.linkedin.com/in/dang-tinh-18709528b',
-          order: 4,
-        },
-        {
-          label: 'Website',
-          value: 'www.yourwebsite.com',
-          order: 5,
-        },
-        {
-          label: 'GitHub',
-          value: 'github.com/yourusername',
-          order: 6,
-        },
-      ],
+      overview: OVERVIEW_SEED_DATA,
+      information: RESUME_INFORMATION_SEED_DATA,
       section: {},
     });
 

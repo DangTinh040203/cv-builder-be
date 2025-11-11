@@ -6,11 +6,6 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AppStrategy } from '@/lib/constants/auth.constant';
 import { Env } from '@/lib/constants/env.constant';
 
-export enum TokenKeys {
-  ACCESS_TOKEN = 'access_token',
-  REFRESH_TOKEN = 'refresh_token',
-}
-
 @Injectable()
 export class AtStrategy extends PassportStrategy(Strategy, AppStrategy.JWT) {
   constructor(private readonly configService: ConfigService) {
