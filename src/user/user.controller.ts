@@ -1,7 +1,16 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { type Request } from 'express';
 
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { UpdateResumeDto } from '@/user/dto/UpdateResume.dto';
 import { ResumeService } from '@/user/services/resume.service';
 import { UserService } from '@/user/services/user.service';
 
@@ -21,5 +30,14 @@ export class UserController {
   @Get('resume')
   async getUserResume(@Req() req: Request) {
     return this.resumeService.get(req.user!._id);
+  }
+
+  @Post('resume/:id')
+  async updateUserResume(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() body: UpdateResumeDto,
+  ) {
+    return this.resumeService.update(id, req.user!._id, body);
   }
 }

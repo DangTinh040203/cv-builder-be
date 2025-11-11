@@ -5,7 +5,7 @@ export const SUB_TITLE_SEED_DATA = 'Professional';
 export const OVERVIEW_SEED_DATA =
   'Over 3 years of experience as a developer with strong communication skills and a quick ability to learn and adapt to new technologies. Specializing in Front-end development and Back-end development, with a solid understanding of modern web technologies. Passionate about building scalable, high-performance web applications and continuously improving skills to stay up to date with the latest industry trends.';
 
-export const RESUME_INFORMATION_SEED_DATA: Array<Omit<Information, '_id'>> = [
+export const RESUME_INFORMATION_SEED_DATA: Array<Information> = [
   {
     label: 'Email',
     value: 'your_email@example.com',
