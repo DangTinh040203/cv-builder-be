@@ -1,4 +1,4 @@
-import { type Information } from '@/lib/types/resume.type';
+import { Skill, type Information } from '@/lib/types/resume.type';
 
 export const SUB_TITLE_SEED_DATA = 'Professional';
 
@@ -36,4 +36,15 @@ export const RESUME_INFORMATION_SEED_DATA: Array<Information> = [
     value: 'github.com/yourusername',
     order: 6,
   },
+];
+
+export const SKILL_SEED_DATA: Array<Skill> = [
+  {
+    label: 'Frontend',
+    value: 'React, Next.js, TailwindCSS',
+    order: 0,
+  },
+  { label: 'Backend', value: 'NestJS, Fastify, Prisma, PostgreSQL', order: 1 },
+  { label: 'DevOps', value: 'AWS, Docker, ECS Fargate, CI/CD', order: 2 },
+  { label: 'AI/ML', value: 'OpenAI API, LangChain, HuggingFace', order: 3 },
 ];

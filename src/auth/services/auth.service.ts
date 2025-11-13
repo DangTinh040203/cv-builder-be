@@ -22,6 +22,7 @@ import { Env } from '@/lib/constants/env.constant';
 import {
   OVERVIEW_SEED_DATA,
   RESUME_INFORMATION_SEED_DATA,
+  SKILL_SEED_DATA,
   SUB_TITLE_SEED_DATA,
 } from '@/lib/constants/resume.constant';
 import { ResumeSection, SectionType } from '@/lib/types/resume.type';
@@ -285,7 +286,7 @@ export class AuthService {
         educations: new ResumeSection(1, SectionType.EDUCATION, []),
         workExperiences: new ResumeSection(2, SectionType.WORK_EXPERIENCE, []),
         projects: new ResumeSection(3, SectionType.PROJECT, []),
-        skills: new ResumeSection(4, SectionType.SKILL, []),
+        skills: new ResumeSection(4, SectionType.SKILL, SKILL_SEED_DATA),
       },
     });
 

@@ -32,6 +32,7 @@ export interface Project {
 export interface Skill {
   label: string;
   value: string;
+  order: number;
 }
 
 export enum SectionType {
