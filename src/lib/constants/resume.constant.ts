@@ -1,9 +1,20 @@
-import { Skill, type Information } from '@/lib/types/resume.type';
+import { Education, Skill, type Information } from '@/lib/types/resume.type';
 
 export const SUB_TITLE_SEED_DATA = 'Professional';
 
 export const OVERVIEW_SEED_DATA =
   'Over 3 years of experience as a developer with strong communication skills and a quick ability to learn and adapt to new technologies. Specializing in Front-end development and Back-end development, with a solid understanding of modern web technologies. Passionate about building scalable, high-performance web applications and continuously improving skills to stay up to date with the latest industry trends.';
+
+export const EDUCATION_SEED_DATA: Array<Education> = [
+  {
+    school: 'University of Information Technology - VNUHCM',
+    degree: 'Bachelor of Science',
+    major: 'Computer Science',
+    startDate: new Date('2018-09-01'),
+    endDate: new Date('2022-06-01'),
+    order: 1,
+  },
+];
 
 export const RESUME_INFORMATION_SEED_DATA: Array<Information> = [
   {

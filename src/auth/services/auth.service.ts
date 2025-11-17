@@ -20,6 +20,7 @@ import { OtpCreatedEvent, OtpEvent } from '@/auth/events/otp-created.event';
 import { TokenService } from '@/auth/services/token.service';
 import { Env } from '@/lib/constants/env.constant';
 import {
+  EDUCATION_SEED_DATA,
   OVERVIEW_SEED_DATA,
   RESUME_INFORMATION_SEED_DATA,
   SKILL_SEED_DATA,
@@ -283,7 +284,11 @@ export class AuthService {
       overview: OVERVIEW_SEED_DATA,
       information: RESUME_INFORMATION_SEED_DATA,
       section: {
-        educations: new ResumeSection(1, SectionType.EDUCATION, []),
+        educations: new ResumeSection(
+          1,
+          SectionType.EDUCATION,
+          EDUCATION_SEED_DATA,
+        ),
         workExperiences: new ResumeSection(2, SectionType.WORK_EXPERIENCE, []),
         projects: new ResumeSection(3, SectionType.PROJECT, []),
         skills: new ResumeSection(4, SectionType.SKILL, SKILL_SEED_DATA),

@@ -8,8 +8,8 @@ export interface Education {
   school: string;
   degree: string;
   major: string;
-  startDate: Date;
-  endDate: Date | null;
+  startDate: string;
+  endDate: string | null;
   order: number;
 }
 
