@@ -14,8 +14,8 @@ export interface Education {
 }
 
 export interface WorkExperience {
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string | null;
   company: string;
   position: string;
   description: string;
