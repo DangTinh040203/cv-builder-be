@@ -9,7 +9,7 @@ export interface Education {
   degree: string;
   major: string;
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
   order: number;
 }
 
