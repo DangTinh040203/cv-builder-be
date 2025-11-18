@@ -14,12 +14,12 @@ export interface Education {
 }
 
 export interface WorkExperience {
-  startDate: string;
-  endDate: string | null;
   company: string;
   position: string;
   description: string;
   order: number;
+  startDate: string;
+  endDate: string | null;
 }
 
 export interface Project {
