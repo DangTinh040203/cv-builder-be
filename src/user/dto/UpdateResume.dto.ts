@@ -1,4 +1,5 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsObject,
@@ -7,10 +8,9 @@ import {
   IsUrl,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 
-import { InformationDto } from './information.dto';
 import { Section } from '@/lib/types/resume.type';
+import { InformationDto } from '@/user/dto/information.dto';
 import { Resume } from '@/user/entities/resume.entity';
 
 export class UpdateResumeDto extends PartialType(

@@ -1,9 +1,12 @@
 import {
-  Education,
-  Skill,
-  WorkExperience,
+  type Education,
   type Information,
+  type Project,
+  SectionType,
+  type Skill,
+  type WorkExperience,
 } from '@/lib/types/resume.type';
+import { type Resume } from '@/user/entities/resume.entity';
 
 export const SUB_TITLE_SEED_DATA = 'Professional';
 
@@ -54,6 +57,17 @@ export const RESUME_INFORMATION_SEED_DATA: Array<Information> = [
   },
 ];
 
+export const SKILL_SEED_DATA: Array<Skill> = [
+  {
+    label: 'Frontend',
+    value: 'React, Next.js, TailwindCSS',
+    order: 0,
+  },
+  { label: 'Backend', value: 'NestJS, Fastify, Prisma, PostgreSQL', order: 1 },
+  { label: 'DevOps', value: 'AWS, Docker, ECS Fargate, CI/CD', order: 2 },
+  { label: 'AI/ML', value: 'OpenAI API, LangChain, HuggingFace', order: 3 },
+];
+
 export const EXPERIENCE_SEED_DATA: Array<WorkExperience> = [
   {
     company: 'Tech Solutions Inc.',
@@ -75,13 +89,107 @@ export const EXPERIENCE_SEED_DATA: Array<WorkExperience> = [
   },
 ];
 
-export const SKILL_SEED_DATA: Array<Skill> = [
+export const PROJECTS_SEED_DATA: Array<Project> = [
   {
-    label: 'Frontend',
-    value: 'React, Next.js, TailwindCSS',
-    order: 0,
+    title: 'Task Management System',
+    subTitle: 'Cloud-based productivity platform',
+    information: [
+      { label: 'Tech Stack', value: 'Next.js, NestJS, AWS', order: 1 },
+      { label: 'Role', value: 'Lead Developer', order: 2 },
+      {
+        label: 'Outcome',
+        value: 'Improved team productivity by 40%',
+        order: 3,
+      },
+    ],
+    order: 1,
   },
-  { label: 'Backend', value: 'NestJS, Fastify, Prisma, PostgreSQL', order: 1 },
-  { label: 'DevOps', value: 'AWS, Docker, ECS Fargate, CI/CD', order: 2 },
-  { label: 'AI/ML', value: 'OpenAI API, LangChain, HuggingFace', order: 3 },
+  {
+    title: 'E-Commerce Platform',
+    subTitle: 'Multi-vendor online marketplace',
+    information: [
+      { label: 'Tech Stack', value: 'React, Node.js, MongoDB', order: 1 },
+      { label: 'Role', value: 'Full Stack Developer', order: 2 },
+      {
+        label: 'Outcome',
+        value: 'Enabled 100+ vendors to sell products online',
+        order: 3,
+      },
+    ],
+    order: 2,
+  },
+  {
+    title: 'Real-Time Chat App',
+    subTitle: 'Cross-platform messaging application',
+    information: [
+      { label: 'Tech Stack', value: 'Flutter, Firebase', order: 1 },
+      { label: 'Role', value: 'Mobile Developer', order: 2 },
+      {
+        label: 'Outcome',
+        value: 'Achieved 10,000+ downloads in 3 months',
+        order: 3,
+      },
+    ],
+    order: 3,
+  },
+  {
+    title: 'Portfolio Website',
+    subTitle: 'Personal branding and showcase site',
+    information: [
+      { label: 'Tech Stack', value: 'Next.js, TailwindCSS', order: 1 },
+      { label: 'Role', value: 'Designer & Developer', order: 2 },
+      {
+        label: 'Outcome',
+        value: 'Increased freelance inquiries by 60%',
+        order: 3,
+      },
+    ],
+    order: 4,
+  },
+  {
+    title: 'IoT Device Dashboard',
+    subTitle: 'Monitoring and analytics for smart devices',
+    information: [
+      { label: 'Tech Stack', value: 'Vue.js, Express, MQTT', order: 1 },
+      { label: 'Role', value: 'Backend Developer', order: 2 },
+      {
+        label: 'Outcome',
+        value: 'Reduced device downtime by 25%',
+        order: 3,
+      },
+    ],
+    order: 5,
+  },
 ];
+
+export const RESUME_MOCK_DATA: Resume = {
+  userId: 'user-12345',
+  title: 'Your Name',
+  subTitle: 'Web Developer',
+  avatar: 'https://avatars.githubusercontent.com/u/000000?v=4',
+  overview:
+    'A passionate software engineer with 3+ years of experience in building full-stack web applications, specializing in TypeScript, React, and AWS Cloud infrastructure. Proven track record of delivering scalable solutions and leading development teams to success. Seeking to leverage my expertise to contribute to innovative projects and drive technological advancements.',
+  information: RESUME_INFORMATION_SEED_DATA,
+  section: {
+    educations: {
+      order: 1,
+      type: SectionType.EDUCATION,
+      content: EDUCATION_SEED_DATA,
+    },
+    workExperiences: {
+      order: 2,
+      type: SectionType.WORK_EXPERIENCE,
+      content: EXPERIENCE_SEED_DATA,
+    },
+    projects: {
+      order: 3,
+      type: SectionType.PROJECT,
+      content: PROJECTS_SEED_DATA,
+    },
+    skills: {
+      order: 4,
+      type: SectionType.SKILL,
+      content: SKILL_SEED_DATA,
+    },
+  },
+};
