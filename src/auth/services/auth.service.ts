@@ -23,6 +23,7 @@ import {
   EDUCATION_SEED_DATA,
   EXPERIENCE_SEED_DATA,
   OVERVIEW_SEED_DATA,
+  PROJECTS_SEED_DATA,
   RESUME_INFORMATION_SEED_DATA,
   SKILL_SEED_DATA,
   SUB_TITLE_SEED_DATA,
@@ -295,7 +296,7 @@ export class AuthService {
           SectionType.WORK_EXPERIENCE,
           EXPERIENCE_SEED_DATA,
         ),
-        projects: new ResumeSection(3, SectionType.PROJECT, []),
+        projects: new ResumeSection(3, SectionType.PROJECT, PROJECTS_SEED_DATA),
         skills: new ResumeSection(4, SectionType.SKILL, SKILL_SEED_DATA),
       },
     });
