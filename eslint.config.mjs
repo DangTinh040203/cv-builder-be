@@ -1,42 +1,139 @@
-import nx from '@nx/eslint-plugin';
+import eslint from '@eslint/js';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import { FlatCompat } from '@eslint/eslintrc';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import parser from '@typescript-eslint/parser';
 
-export default [
-  ...nx.configs['flat/base'],
-  ...nx.configs['flat/typescript'],
-  ...nx.configs['flat/javascript'],
-  {
-    ignores: ['**/dist', '**/out-tsc'],
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  resolvePluginsRelativeTo: __dirname,
+  recommendedConfig: {
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.json',
+        },
+      },
+    },
   },
+});
+
+export default tseslint.config(
   {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+    ignores: [
+      'eslint.config.mjs',
+      '**/eslint.config.mjs',
+      'node_modules/**',
+      'dist/**',
+      '.nx/**',
+      'mongodb_data',
+      'logs',
+      '**/*.js',
+    ],
+  },
+  ...tseslint.configs.recommendedTypeChecked,
+  eslint.configs.recommended,
+  eslintPluginPrettierRecommended,
+
+  ...compat.extends(
+    'prettier',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
+    'plugin:prettier/recommended',
+  ),
+
+  ...compat.plugins(
+    'immer',
+    'import',
+    'simple-import-sort',
+    '@typescript-eslint',
+  ),
+
+  {
+    files: ['**/*.{ts,tsx,mts,cts}'],
+    languageOptions: {
+      parser,
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+      },
+      ecmaVersion: 2020,
+      sourceType: 'module',
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.base.json',
+        },
+      },
+    },
     rules: {
-      '@nx/enforce-module-boundaries': [
+      '@typescript-eslint/no-unsafe-return': 'warn',
+      '@typescript-eslint/no-unsafe-call': 'warn',
+      '@typescript-eslint/no-unsafe-assignment': 'warn',
+      '@typescript-eslint/await-thenable': 'warn',
+      '@typescript-eslint/no-unsafe-member-access': 'warn',
+      'import/no-unresolved': 'warn',
+      'import/extensions': 'warn',
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      'import/namespace': 'warn',
+      'import/no-duplicates': 'warn',
+
+      'prettier/prettier': 'warn',
+      '@typescript-eslint/require-await': 'warn',
+      '@typescript-eslint/unbound-method': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-empty-interface': 'warn',
+      'simple-import-sort/imports': 'warn',
+      'simple-import-sort/exports': 'warn',
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-floating-promises': 'warn',
+      '@typescript-eslint/consistent-type-imports': [
+        'warn',
+        {
+          fixStyle: 'inline-type-imports',
+        },
+      ],
+      'no-param-reassign': [
         'error',
         {
-          enforceBuildableLibDependency: true,
-          allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
-          depConstraints: [
-            {
-              sourceTag: '*',
-              onlyDependOnLibsWithTags: ['*'],
-            },
-          ],
+          props: true,
+          ignorePropertyModificationsForRegex: ['^draft', 'state'],
+        },
+      ],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: ['../**', './**', '!@/**'],
+        },
+      ],
+      'no-console': 'warn',
+      'immer/no-update-map': 'error',
+      'import/first': 'error',
+      'import/newline-after-import': 'error',
+      '@typescript-eslint/no-misused-promises': [
+        2,
+        {
+          checksVoidReturn: {
+            attributes: false,
+          },
         },
       ],
     },
   },
-  {
-    files: [
-      '**/*.ts',
-      '**/*.tsx',
-      '**/*.cts',
-      '**/*.mts',
-      '**/*.js',
-      '**/*.jsx',
-      '**/*.cjs',
-      '**/*.mjs',
-    ],
-    // Override or add rules here
-    rules: {},
-  },
-];
+);

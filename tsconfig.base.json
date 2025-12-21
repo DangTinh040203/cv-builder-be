@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@/*": ["apps/BFF/src/*"]
+    },
+    "ignoreDeprecations": "5.0"
   },
   "exclude": ["node_modules", "tmp"]
 }
