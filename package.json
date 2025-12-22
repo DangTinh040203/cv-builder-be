@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "build": "nx build",
+    "build:all": "nx run-many --target=build --all",
+    "serve": "nx serve",
+    "serve:all": "nx run-many --target=serve --all",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "dev:setup": "docker-compose -f docker/docker-compose.dev.yml up -d",
@@ -33,6 +37,7 @@
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@types/express": "^5.0.6",
     "@types/node": "20.19.9",
     "@typescript-eslint/parser": "^8.50.0",
     "eslint": "^9.8.0",

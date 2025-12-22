@@ -15,7 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["apps/BFF/src/*"]
+      "@/*": ["apps/BFF/src/*"],
+      "@libs/constants": ["libs/constants/src/index.ts"],
+      "@libs/configs": ["libs/configs/src/index.ts"],
+      "@libs/interceptors": ["libs/interceptors/src/index.ts"],
+      "@libs/middlewares": ["libs/middlewares/src/index.ts"],
+      "@libs/utils": ["libs/utils/src/index.ts"]
     },
     "ignoreDeprecations": "5.0"
   },
