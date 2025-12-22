@@ -1,82 +1,209 @@
-# Be
+# 🎯 CV Builder - Backend
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+> AI-powered CV Builder with Mock Interview capabilities
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## Overview
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+**CV Builder** is a comprehensive platform that provides CV templates for users to create professional resumes. It features:
 
-## Finish your remote caching setup
+- 🎨 **CV Templates** - Professional, customizable CV templates
+- 🤖 **AI Integration** - AI-powered suggestions and UI modifications based on user requirements
+- 🎤 **Mock Interview** - AI-driven mock interviews via voice/video, tailored to user's skills, experience, and competency level
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/wJSEaXunjf)
+## Tech Stack
 
+| Layer              | Technologies        |
+| ------------------ | ------------------- |
+| **Frontend**       | Next.js, Turborepo  |
+| **Backend**        | NestJS, Nx Monorepo |
+| **Database**       | PostgreSQL          |
+| **Cache**          | Redis               |
+| **Storage**        | MinIO               |
+| **Auth**           | Keycloak            |
+| **Message Broker** | NATS                |
 
-## Run tasks
+---
 
-To run the dev server for your app, use:
+## 🏗️ Architecture
 
-```sh
-npx nx serve BFF
+### Domain Services
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         Frontend (Next.js)                      │
+└─────────────────────────────┬───────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    API Gateway (BFF)                            │
+│  • Authentication & Authorization (Keycloak)                    │
+│  • Request routing to internal services                         │
+│  • Data aggregation                                             │
+│  • Rate limiting                                                │
+└─────────────────────────────┬───────────────────────────────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+┌───────────────┐    ┌───────────────┐    ┌───────────────┐
+│ User Service  │    │Resume Service │    │Interview Svc  │
+│  • Profile    │    │  • CRUD CV    │    │  • Sessions   │
+│  • Sync from  │    │  • Templates  │    │  • Scoring    │
+│    Keycloak   │    │  • Export PDF │    │  • Voice/Video│
+│  • Portfolio  │    │  • Versioning │    │  • WebRTC     │
+└───────────────┘    └───────────────┘    └───────────────┘
+        │                     │                     │
+        └─────────────────────┼─────────────────────┘
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      AI Gateway Service                         │
+│  • LLM Wrapper (OpenAI, Anthropic, Gemini)                     │
+│  • Prompt Templates                                             │
+│  • Context Management                                           │
+│  • BullMQ for async processing                                  │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+        ┌─────────────────────┴─────────────────────┐
+        ▼                                           ▼
+┌───────────────┐                          ┌───────────────┐
+│Storage Service│                          │Notification   │
+│  • MinIO      │                          │  Service      │
+│  • Presigned  │                          │  • Email      │
+│    URLs       │                          │  • Realtime   │
+└───────────────┘                          └───────────────┘
 ```
 
-To create a production bundle:
+### Service Responsibilities
 
-```sh
-npx nx build BFF
+| Service                  | Responsibilities                                                 |
+| ------------------------ | ---------------------------------------------------------------- |
+| **API Gateway (BFF)**    | Entry point, auth, routing, data aggregation, rate limiting      |
+| **User Service**         | Sync Keycloak users, extended profile data, portfolio management |
+| **Resume Service**       | CV CRUD, templates, PDF export (Puppeteer), version history      |
+| **AI Gateway**           | LLM wrapper, prompt management, context handling, async queue    |
+| **Interview Service**    | Session management, Q&A logs, scoring, WebRTC signaling, STT/TTS |
+| **Storage Service**      | MinIO wrapper, file upload/download, presigned URLs              |
+| **Notification Service** | Email notifications, realtime events via NATS                    |
+
+---
+
+## 📁 Project Structure
+
+```
+apps/
+  ├── bff-gateway/        # API Gateway (NestJS)
+  ├── user-service/       # User & Profile Service
+  ├── resume-service/     # CV Management Service
+  ├── interview-service/  # Mock Interview Service
+  ├── ai-service/         # AI Gateway Service
+  └── storage-service/    # Media Storage Service
+
+libs/
+  ├── constants/          # Shared constants
+  ├── configs/            # Shared configurations
+  ├── interceptors/       # NestJS interceptors
+  ├── middlewares/        # NestJS middlewares
+  └── utils/              # Utility functions
 ```
 
-To see all available targets to run for a project, run:
+---
 
-```sh
-npx nx show project BFF
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm
+- Docker & Docker Compose
+
+### Setup Development Environment
+
+```bash
+# Start infrastructure (PostgreSQL, Redis, MinIO, NATS)
+pnpm run dev:setup
+
+# Install dependencies
+pnpm install
+
+# Run all services
+pnpm run serve:all
+
+# Build all services
+pnpm run build:all
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### Available Scripts
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+| Script               | Description                 |
+| -------------------- | --------------------------- |
+| `pnpm run build`     | Build a specific app        |
+| `pnpm run build:all` | Build all apps              |
+| `pnpm run serve`     | Start a specific app        |
+| `pnpm run serve:all` | Start all apps              |
+| `pnpm run lint`      | Run ESLint                  |
+| `pnpm run lint:fix`  | Run ESLint with auto-fix    |
+| `pnpm run dev:setup` | Start Docker infrastructure |
 
-## Add new projects
+---
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+## 🔄 Request Flow
 
-Use the plugin's generator to create new projects.
+### CV Creation Flow
 
-To generate a new application, use:
-
-```sh
-npx nx g @nx/nest:app demo
+```
+Frontend → API Gateway → Resume Service → PostgreSQL
+                              ↓
+                    NATS (cv.created event)
+                              ↓
+                    AI Service (analysis)
 ```
 
-To generate a new library, use:
+### Mock Interview Flow
 
-```sh
-npx nx g @nx/node:lib mylib
+```
+Frontend ←→ WebSocket ←→ API Gateway / Interview Service
+                              ↓
+              Resume Service (fetch CV data via gRPC/HTTP)
+                              ↓
+              AI Service (generate questions/responses)
+                              ↓
+                    TTS/STT Processing
+                              ↓
+              Frontend (audio/video stream)
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+---
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🔧 Development
 
+### Generate New Application
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+npx nx g @nx/nest:app <app-name>
+```
 
-## Install Nx Console
+### Generate New Library
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+```bash
+npx nx g @nx/node:lib <lib-name>
+```
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### View Project Graph
 
-## Useful links
+```bash
+npx nx graph
+```
 
-Learn more:
+---
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 📚 Architecture Decisions
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **NATS** for async tasks (notifications, analytics) that don't require immediate response
+- **gRPC/HTTP** for synchronous internal service communication
+- **Redis Queue (BullMQ)** for time-consuming AI requests
+- **Multi-tenancy**: Using `userId` for data isolation (B2C model). For B2B, consider schema-based tenant separation
+
+---
+
+## 📝 License
+
+MIT
