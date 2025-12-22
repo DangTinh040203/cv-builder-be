@@ -18,9 +18,9 @@ RUN pnpm install --frozen-lockfile
 # Copy the rest of the source code
 COPY . .
 
-# Build the specific application (BFF)
+# Build the specific application (api-gateway)
 # Ensure "generatePackageJson": true is set in your project.json for this app
-RUN pnpm nx build BFF
+RUN pnpm nx build api-gateway
 
 # =============================================================================
 # Stage 2: Dependencies
@@ -34,8 +34,8 @@ WORKDIR /app
 RUN corepack enable
 
 # Copy only the generated package.json from the build output
-# This ensures we only install dependencies actually used by the BFF app
-COPY --from=builder /app/dist/apps/BFF/package.json ./
+# This ensures we only install dependencies actually used by the api-gateway app
+COPY --from=builder /app/dist/apps/api-gateway/package.json ./
 COPY --from=builder /app/pnpm-lock.yaml ./
 
 # Install only production dependencies
@@ -59,7 +59,7 @@ RUN addgroup -g 1001 -S nodejs && \
 
 # Copy the built application from the builder stage
 # Set ownership directly during copy to avoid using 'chown' (which adds layers)
-COPY --from=builder --chown=nestjs:nodejs /app/dist/apps/BFF ./
+COPY --from=builder --chown=nestjs:nodejs /app/dist/apps/api-gateway ./
 
 # Copy the optimized node_modules from the deps stage
 # Note: We do NOT install pnpm here to keep the image minimal

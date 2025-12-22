@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["apps/BFF/src/*"],
+      "@/*": ["apps/api-gateway/src/*"],
       "@libs/constants": ["libs/constants/src/index.ts"],
       "@libs/configs": ["libs/configs/src/index.ts"],
       "@libs/interceptors": ["libs/interceptors/src/index.ts"],

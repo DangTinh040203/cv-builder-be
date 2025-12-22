@@ -35,7 +35,7 @@
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    API Gateway (BFF)                            │
+│                    API Gateway                                   │
 │  • Authentication & Authorization (Keycloak)                    │
 │  • Request routing to internal services                         │
 │  • Data aggregation                                             │
@@ -76,7 +76,7 @@
 
 | Service                  | Responsibilities                                                 |
 | ------------------------ | ---------------------------------------------------------------- |
-| **API Gateway (BFF)**    | Entry point, auth, routing, data aggregation, rate limiting      |
+| **API Gateway**          | Entry point, auth, routing, data aggregation, rate limiting      |
 | **User Service**         | Sync Keycloak users, extended profile data, portfolio management |
 | **Resume Service**       | CV CRUD, templates, PDF export (Puppeteer), version history      |
 | **AI Gateway**           | LLM wrapper, prompt management, context handling, async queue    |
@@ -90,7 +90,7 @@
 
 ```
 apps/
-  ├── bff-gateway/        # API Gateway (NestJS)
+  ├── api-gateway/          # API Gateway (NestJS)
   ├── user-service/       # User & Profile Service
   ├── resume-service/     # CV Management Service
   ├── interview-service/  # Mock Interview Service

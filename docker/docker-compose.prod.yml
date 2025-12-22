@@ -101,13 +101,13 @@ services:
           cpus: '0.5'
           memory: 256M
 
-  # BFF Application
-  bff:
-    image: cv-builder-bff:${BFF_VERSION:-latest}
-    container_name: cv-builder-bff
+  # API Gateway Application
+  api-gateway:
+    image: cv-builder-api-gateway:${API_GATEWAY_VERSION:-latest}
+    container_name: cv-builder-api-gateway
     restart: always
     ports:
-      - '${BFF_PORT:-3000}:3000'
+      - '${API_GATEWAY_PORT:-3000}:3000'
     environment:
       NODE_ENV: ${NODE_ENV:-production}
       # PostgreSQL
