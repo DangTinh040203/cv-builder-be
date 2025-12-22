@@ -16,11 +16,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["apps/api-gateway/src/*"],
-      "@libs/constants": ["libs/constants/src/index.ts"],
-      "@libs/configs": ["libs/configs/src/index.ts"],
-      "@libs/interceptors": ["libs/interceptors/src/index.ts"],
-      "@libs/middlewares": ["libs/middlewares/src/index.ts"],
-      "@libs/utils": ["libs/utils/src/index.ts"]
+      "@libs/constants/*": ["libs/constants/src/*"],
+      "@libs/configs/*": ["libs/configs/src/*"],
+      "@libs/interceptors/*": ["libs/interceptors/src/*"],
+      "@libs/middlewares/*": ["libs/middlewares/src/*"],
+      "@libs/utils/*": ["libs/utils/src/*"]
     },
     "ignoreDeprecations": "5.0"
   },
