@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Run lint-staged for pre-commit checks
+npx lint-staged
