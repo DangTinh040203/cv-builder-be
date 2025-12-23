@@ -9,9 +9,15 @@
   ],
   "compilerOptions": {
     "esModuleInterop": true,
-    "baseUrl": ".",
+    "baseUrl": "../..",
     "paths": {
-      "@/*": ["src/*"]
+      "@api-gateway/*": ["apps/api-gateway/src/*"],
+      "@libs/constants/*": ["libs/constants/src/*"],
+      "@libs/configs/*": ["libs/configs/src/*"],
+      "@libs/interceptors/*": ["libs/interceptors/src/*"],
+      "@libs/middlewares/*": ["libs/middlewares/src/*"],
+      "@libs/utils/*": ["libs/utils/src/*"],
+      "@libs/types/*": ["libs/types/src/*"]
     }
   }
 }

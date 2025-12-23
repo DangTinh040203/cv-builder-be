@@ -20,7 +20,8 @@
       "@libs/configs/*": ["libs/configs/src/*"],
       "@libs/interceptors/*": ["libs/interceptors/src/*"],
       "@libs/middlewares/*": ["libs/middlewares/src/*"],
-      "@libs/utils/*": ["libs/utils/src/*"]
+      "@libs/utils/*": ["libs/utils/src/*"],
+      "@libs/types/*": ["libs/types/src/*"]
     },
     "ignoreDeprecations": "5.0"
   },

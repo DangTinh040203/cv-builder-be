@@ -83,13 +83,14 @@ export default tseslint.config(
       },
     },
     rules: {
-      '@typescript-eslint/no-unsafe-return': 'warn',
-      '@typescript-eslint/no-unsafe-call': 'warn',
-      '@typescript-eslint/no-unsafe-assignment': 'warn',
+      'import/extensions': 0,
+      '@typescript-eslint/no-unsafe-return': 0,
+      '@typescript-eslint/no-unsafe-assignment': 0,
+      '@typescript-eslint/no-unsafe-call': 0,
+      'import/no-unresolved': 0,
+
       '@typescript-eslint/await-thenable': 'warn',
       '@typescript-eslint/no-unsafe-member-access': 'warn',
-      'import/no-unresolved': 'warn',
-      'import/extensions': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
       'import/namespace': 'warn',
       'import/no-duplicates': 'warn',
@@ -119,7 +120,7 @@ export default tseslint.config(
       'no-restricted-imports': [
         'error',
         {
-          patterns: ['../**', './**', '!@/**'],
+          patterns: ['../**', './**'],
         },
       ],
       'no-console': 'warn',
