@@ -10,7 +10,8 @@
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "dev:setup": "docker-compose -f docker/docker-compose.dev.yml up -d",
-    "docker:build": "docker build -f docker/Dockerfile -t cv-builder-bff ."
+    "docker:build": "docker build -f docker/Dockerfile -t cv-builder-bff .",
+    "docs:serve": "docsify serve docs --port 4000"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +41,7 @@
     "@types/express": "^5.0.6",
     "@types/node": "20.19.9",
     "@typescript-eslint/parser": "^8.50.0",
+    "docsify-cli": "^4.4.4",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-import-resolver-typescript": "^4.4.4",
