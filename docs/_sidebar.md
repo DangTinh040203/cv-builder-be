@@ -9,3 +9,5 @@
 
 - **Development**
   - [Code Conventions](code-conventions.md)
+  - [Environment Configuration](environment-configuration.md)
+  - [Git Hooks & Commits](git-hooks.md)

@@ -119,26 +119,28 @@ export class CreateUserDto {
 
 Imports should be ordered as follows:
 
-1. Node.js built-in modules
-2. External packages (npm)
-3. Internal libraries (`@libs/*`)
-4. Local imports (relative paths)
+1. App-specific imports (`@<service>/*`)
+2. Shared libraries (`@libs/*`)
+3. External packages (npm)
+4. Node.js built-in modules
+
+> **Important:** Relative imports (`./**`, `../**`) are NOT allowed. All imports must use `@` path aliases.
 
 ```typescript
-// 1. Node.js built-ins
-import { join } from 'path';
+// 1. App-specific imports
+import { AppModule } from '@api-gateway/app/app.module';
+import { Env } from '@api-gateway/config';
 
-// 2. External packages
+// 2. Shared libraries
+import { bootstrapApplication } from '@libs/configs/index';
+import { ServiceName } from '@libs/constants/index';
+
+// 3. External packages
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 
-// 3. Internal libraries
-import { ApiConfig } from '@libs/configs';
-import { UserRole } from '@libs/constants';
-
-// 4. Local imports
-import { User } from './entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
+// 4. Node.js built-ins (if needed)
+import { join } from 'path';
 ```
 
 ## Error Handling
@@ -234,9 +236,14 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 | `fix`      | Bug fix                              |
 | `docs`     | Documentation changes                |
 | `style`    | Code style changes (formatting, etc) |
+| `update`   | Dependency or minor updates          |
 | `refactor` | Code refactoring                     |
 | `test`     | Adding or updating tests             |
 | `chore`    | Maintenance tasks                    |
+| `perf`     | Performance improvements             |
+| `ci`       | CI/CD changes                        |
+| `build`    | Build system changes                 |
+| `revert`   | Reverting previous commit            |
 
 **Examples:**
 

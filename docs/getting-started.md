@@ -59,15 +59,16 @@ pnpm run serve api-gateway
 
 ## Available Scripts
 
-| Script               | Description                 |
-| -------------------- | --------------------------- |
-| `pnpm run build`     | Build a specific app        |
-| `pnpm run build:all` | Build all apps              |
-| `pnpm run serve`     | Start a specific app        |
-| `pnpm run serve:all` | Start all apps              |
-| `pnpm run lint`      | Run ESLint                  |
-| `pnpm run lint:fix`  | Run ESLint with auto-fix    |
-| `pnpm run dev:setup` | Start Docker infrastructure |
+| Script                | Description                     |
+| --------------------- | ------------------------------- |
+| `pnpm run build`      | Build a specific app            |
+| `pnpm run build:all`  | Build all apps                  |
+| `pnpm run serve`      | Start a specific app            |
+| `pnpm run serve:all`  | Start all apps                  |
+| `pnpm run lint`       | Run ESLint                      |
+| `pnpm run lint:fix`   | Run ESLint with auto-fix        |
+| `pnpm run dev:setup`  | Start Docker infrastructure     |
+| `pnpm run docs:serve` | Serve documentation (port 4000) |
 
 ## Docker Services
 

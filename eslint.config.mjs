@@ -6,6 +6,7 @@ import { FlatCompat } from '@eslint/eslintrc';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import parser from '@typescript-eslint/parser';
+import boundaries from 'eslint-plugin-boundaries';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -58,6 +59,54 @@ export default tseslint.config(
     'simple-import-sort',
     '@typescript-eslint',
   ),
+
+  // Boundaries plugin configuration
+  {
+    plugins: {
+      boundaries,
+    },
+    settings: {
+      'boundaries/elements': [
+        // Define app services
+        { type: 'api-gateway', pattern: 'apps/api-gateway/*' },
+        { type: 'user-service', pattern: 'apps/user-service/*' },
+        { type: 'resume-service', pattern: 'apps/resume-service/*' },
+        { type: 'interview-service', pattern: 'apps/interview-service/*' },
+        { type: 'ai-service', pattern: 'apps/ai-service/*' },
+        { type: 'storage-service', pattern: 'apps/storage-service/*' },
+        {
+          type: 'notification-service',
+          pattern: 'apps/notification-service/*',
+        },
+        // Define shared libs
+        { type: 'lib', pattern: 'libs/*' },
+      ],
+      'boundaries/ignore': ['**/*.spec.ts', '**/*.test.ts'],
+    },
+    rules: {
+      // Enforce architectural boundaries
+      'boundaries/element-types': [
+        'error',
+        {
+          default: 'disallow',
+          rules: [
+            // Services can import from libs
+            { from: 'api-gateway', allow: ['lib'] },
+            { from: 'user-service', allow: ['lib'] },
+            { from: 'resume-service', allow: ['lib'] },
+            { from: 'interview-service', allow: ['lib'] },
+            { from: 'ai-service', allow: ['lib'] },
+            { from: 'storage-service', allow: ['lib'] },
+            { from: 'notification-service', allow: ['lib'] },
+            // Libs can only import from other libs
+            { from: 'lib', allow: ['lib'] },
+          ],
+        },
+      ],
+      // Prevent external imports between services (more explicit rule)
+      'boundaries/no-unknown-files': 'error',
+    },
+  },
 
   {
     files: ['**/*.{ts,tsx,mts,cts}'],
