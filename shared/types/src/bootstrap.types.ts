@@ -9,6 +9,7 @@ import type { CorsOptions } from '@nestjs/common/interfaces/external/cors-option
 import type { MicroserviceOptions } from '@nestjs/microservices';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { type ServiceName } from '@shared/constants/index';
+import type { SwaggerConfig } from '@shared/types/swagger.types';
 import type { RequestHandler } from 'express';
 
 /**
@@ -65,6 +66,11 @@ export interface BootstrapOptions {
    * Whether to enable shutdown hooks
    */
   enableShutdownHooks: boolean;
+
+  /**
+   * Swagger/OpenAPI documentation configuration (optional)
+   */
+  swagger?: SwaggerConfig;
 }
 
 /**

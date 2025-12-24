@@ -30,6 +30,12 @@ void bootstrapApplication(
     interceptors: [],
     microservices: [],
     enableShutdownHooks: true,
+    swagger: {
+      title: 'CV Builder API',
+      description: 'API documentation for CV Builder backend services',
+      version: '1.0',
+      path: 'docs',
+    },
   },
   // ConfigResolver - called after app creation with access to ConfigService
   (app) => {

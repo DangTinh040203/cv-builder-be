@@ -2,6 +2,7 @@ import type { INestApplication } from '@nestjs/common';
 import { ConsoleLogger, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import type { BootstrapOptions, ConfigResolver } from '@shared/types/index';
 
 /**
@@ -23,6 +24,7 @@ export async function bootstrapApplication(
     interceptors,
     microservices,
     enableShutdownHooks,
+    swagger,
   } = options;
 
   const app = await NestFactory.create<NestExpressApplication>(appModule, {
@@ -69,6 +71,21 @@ export async function bootstrapApplication(
   // Enable shutdown hooks if requested
   if (enableShutdownHooks) {
     app.enableShutdownHooks();
+  }
+
+  // Setup Swagger if configured
+  if (swagger) {
+    const config = new DocumentBuilder()
+      .setTitle(swagger.title)
+      .setDescription(swagger.description)
+      .setVersion(swagger.version)
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup(`${globalPrefix}/${swagger.path}`, app, document);
+    Logger.log(
+      `📚 Swagger UI: http://localhost:${port}/${globalPrefix}/${swagger.path}`,
+      serviceName,
+    );
   }
 
   // Start microservices if any configured

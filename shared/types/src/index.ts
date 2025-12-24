@@ -3,3 +3,4 @@ export type {
   ConfigResolver,
   DynamicConfig,
 } from '@shared/types/bootstrap.types';
+export type { SwaggerConfig } from '@shared/types/swagger.types';
