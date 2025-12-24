@@ -9,7 +9,7 @@
     "serve:all": "nx run-many --target=serve --all",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
-    "dev:setup": "docker-compose -f docker/docker-compose.dev.yml up -d",
+    "dev:setup": "docker compose -f docker/docker-compose.dev.yml up -d",
     "docker:build": "docker build -f docker/Dockerfile -t cv-builder-bff .",
     "docs:serve": "docsify serve docs --port 4000",
     "prepare": "husky"
