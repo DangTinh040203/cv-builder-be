@@ -81,6 +81,7 @@ When running `pnpm run dev:setup`, the following services are started:
 | MinIO         | 9000 | Object storage (S3-compatible) |
 | MinIO Console | 9001 | MinIO web interface            |
 | NATS          | 4222 | Message broker                 |
+| Keycloak      | 8080 | Identity & Access Management   |
 
 ## Generating New Apps/Libraries
 

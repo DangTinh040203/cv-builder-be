@@ -1,9 +1,13 @@
 import { AppController } from '@api-gateway/app/app.controller';
-import { AppConfigModule } from '@api-gateway/config/config.module';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [AppConfigModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
   controllers: [AppController],
   providers: [],
 })

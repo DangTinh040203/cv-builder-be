@@ -79,7 +79,7 @@ export default tseslint.config(
           pattern: 'apps/notification-service/*',
         },
         // Define shared libs
-        { type: 'lib', pattern: 'libs/*' },
+        { type: 'shared', pattern: 'shared/*' },
       ],
       'boundaries/ignore': ['**/*.spec.ts', '**/*.test.ts'],
     },
@@ -90,16 +90,16 @@ export default tseslint.config(
         {
           default: 'disallow',
           rules: [
-            // Services can import from libs
-            { from: 'api-gateway', allow: ['lib'] },
-            { from: 'user-service', allow: ['lib'] },
-            { from: 'resume-service', allow: ['lib'] },
-            { from: 'interview-service', allow: ['lib'] },
-            { from: 'ai-service', allow: ['lib'] },
-            { from: 'storage-service', allow: ['lib'] },
-            { from: 'notification-service', allow: ['lib'] },
-            // Libs can only import from other libs
-            { from: 'lib', allow: ['lib'] },
+            // Services can import from shared
+            { from: 'api-gateway', allow: ['shared'] },
+            { from: 'user-service', allow: ['shared'] },
+            { from: 'resume-service', allow: ['shared'] },
+            { from: 'interview-service', allow: ['shared'] },
+            { from: 'ai-service', allow: ['shared'] },
+            { from: 'storage-service', allow: ['shared'] },
+            { from: 'notification-service', allow: ['shared'] },
+            // Shared can only import from other shared
+            { from: 'shared', allow: ['shared'] },
           ],
         },
       ],

@@ -15,13 +15,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["apps/api-gateway/src/*"],
-      "@libs/constants/*": ["libs/constants/src/*"],
-      "@libs/configs/*": ["libs/configs/src/*"],
-      "@libs/interceptors/*": ["libs/interceptors/src/*"],
-      "@libs/middlewares/*": ["libs/middlewares/src/*"],
-      "@libs/utils/*": ["libs/utils/src/*"],
-      "@libs/types/*": ["libs/types/src/*"]
+      "@shared/constants/*": ["shared/constants/src/*"],
+      "@shared/configs/*": ["shared/configs/src/*"],
+      "@shared/interceptors/*": ["shared/interceptors/src/*"],
+      "@shared/middlewares/*": ["shared/middlewares/src/*"],
+      "@shared/utils/*": ["shared/utils/src/*"],
+      "@shared/types/*": ["shared/types/src/*"],
+      "@shared/guards/*": ["shared/guards/src/*"],
+      "@shared/decorators/*": ["shared/decorators/src/*"],
+      "@shared/pipes/*": ["shared/pipes/src/*"]
     },
     "ignoreDeprecations": "5.0"
   },

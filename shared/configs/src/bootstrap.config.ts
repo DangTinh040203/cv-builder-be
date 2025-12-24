@@ -1,8 +1,8 @@
-import type { BootstrapOptions, ConfigResolver } from '@libs/types/index';
 import type { INestApplication } from '@nestjs/common';
 import { ConsoleLogger, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import type { BootstrapOptions, ConfigResolver } from '@shared/types/index';
 
 /**
  * Bootstrap a NestJS application with the provided configuration.

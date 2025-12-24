@@ -1,9 +1,8 @@
 import { AppModule } from '@api-gateway/app/app.module';
-import { Env } from '@api-gateway/config';
-import { bootstrapApplication } from '@libs/configs/index';
-import { ServiceName } from '@libs/constants/index';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { bootstrapApplication } from '@shared/configs/index';
+import { ServiceName } from '@shared/constants/index';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -36,13 +35,13 @@ void bootstrapApplication(
   (app) => {
     const configService = app.get(ConfigService);
     return {
-      port: configService.getOrThrow<number>(Env.PORT),
+      port: configService.get<number>('PORT', 3000),
       versioning: {
         type: VersioningType.URI,
         defaultVersion: '1',
       },
       cors: {
-        origin: configService.getOrThrow<string>(Env.FRONTEND_ORIGIN),
+        origin: configService.get<string>('FRONTEND_ORIGIN', '*'),
         credentials: true,
       },
     };

@@ -1,4 +1,3 @@
-import { type ServiceName } from '@libs/constants/index';
 import type {
   ConsoleLoggerOptions,
   ExceptionFilter,
@@ -9,6 +8,7 @@ import type {
 import type { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import type { MicroserviceOptions } from '@nestjs/microservices';
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import { type ServiceName } from '@shared/constants/index';
 import type { RequestHandler } from 'express';
 
 /**

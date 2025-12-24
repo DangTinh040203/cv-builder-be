@@ -120,7 +120,7 @@ export class CreateUserDto {
 Imports should be ordered as follows:
 
 1. App-specific imports (`@<service>/*`)
-2. Shared libraries (`@libs/*`)
+2. Shared libraries (`@shared/*`)
 3. External packages (npm)
 4. Node.js built-in modules
 
@@ -129,11 +129,11 @@ Imports should be ordered as follows:
 ```typescript
 // 1. App-specific imports
 import { AppModule } from '@api-gateway/app/app.module';
-import { Env } from '@api-gateway/config';
+import { Env } from '@api-gateway/common/config';
 
 // 2. Shared libraries
-import { bootstrapApplication } from '@libs/configs/index';
-import { ServiceName } from '@libs/constants/index';
+import { bootstrapApplication } from '@shared/configs/index';
+import { ServiceName } from '@shared/constants/index';
 
 // 3. External packages
 import { Injectable } from '@nestjs/common';

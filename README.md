@@ -79,7 +79,7 @@ Frontend → API Gateway → Resume Service → PostgreSQL
 ```
 Frontend ←→ WebSocket ←→ API Gateway / Interview Service
                               ↓
-              Resume Service (fetch CV data via gRPC/HTTP)
+              Resume Service (fetch CV data via TCP)
                               ↓
               AI Service (generate questions/responses)
                               ↓

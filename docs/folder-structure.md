@@ -6,8 +6,8 @@ This document describes the project's folder structure and the purpose of each d
 
 ```
 be/
-├── apps/                    # Application modules
-├── libs/                    # Shared libraries
+├── apps/                    # Microservices
+├── shared/                  # Shared libraries (cross-service)
 ├── docs/                    # Documentation (this folder)
 ├── docker/                  # Docker configuration files
 ├── dist/                    # Build output (git-ignored)
@@ -28,82 +28,65 @@ Each application is a standalone NestJS microservice:
 
 ```
 apps/
-├── api-gateway/             # API Gateway service
-│   ├── src/
-│   │   ├── app/             # Application modules
-│   │   ├── main.ts          # Entry point
-│   │   └── ...
-│   ├── project.json         # Nx project configuration
-│   └── tsconfig.json        # TypeScript config
-│
-├── user-service/            # User management service
-├── resume-service/          # Resume/CV management service
-├── interview-service/       # Mock interview service
-├── ai-service/              # AI gateway service
-├── storage-service/         # File storage service
-└── notification-service/    # Notification service
-```
-
-### Service Responsibilities
-
-| Service                  | Responsibilities                                            |
-| ------------------------ | ----------------------------------------------------------- |
-| **api-gateway**          | Entry point, auth, routing, data aggregation, rate limiting |
-| **user-service**         | User profiles, Keycloak sync, portfolio management          |
-| **resume-service**       | CV CRUD, templates, PDF export, version history             |
-| **interview-service**    | Session management, Q&A logs, scoring, WebRTC               |
-| **ai-service**           | LLM wrapper, prompt management, async processing            |
-| **storage-service**      | MinIO wrapper, file upload/download, presigned URLs         |
-| **notification-service** | Email notifications, realtime events via NATS               |
-
-## Shared Libraries (`libs/`)
-
-Reusable code shared across all applications:
-
-```
-libs/
-├── configs/                 # Shared configuration utilities
-│   ├── src/
-│   │   ├── index.ts
-│   │   └── ...
-│   └── project.json
-│
-├── constants/               # Shared constants and enums
-│   ├── src/
-│   │   ├── index.ts
-│   │   └── ...
-│   └── project.json
-│
-├── interceptors/            # NestJS interceptors
-│   ├── src/
-│   │   ├── index.ts
-│   │   └── ...
-│   └── project.json
-│
-├── middlewares/             # NestJS middlewares
-│   ├── src/
-│   │   ├── index.ts
-│   │   └── ...
-│   └── project.json
-│
-├── types/                   # Shared TypeScript types
-│   └── ...
-│
-└── utils/                   # Utility functions
+└── api-gateway/             # API Gateway service
     ├── src/
-    │   ├── index.ts
-    │   └── ...
-    └── project.json
+    │   ├── main.ts          # Entry point
+    │   ├── app/             # Root module and controller
+    │   │   ├── app.module.ts
+    │   │   └── app.controller.ts
+    │   ├── common/          # App-specific shared code
+    │   │   ├── configs/     # Environment configuration
+    │   │   ├── constants/   # App-specific constants
+    │   │   ├── middlewares/ # App-specific middlewares
+    │   │   ├── types/       # App-specific types
+    │   │   ├── utils/       # App-specific utilities
+    │   │   ├── interceptors/# App-specific interceptors
+    │   │   ├── guards/      # App-specific guards
+    │   │   ├── decorators/  # App-specific decorators
+    │   │   └── pipes/       # App-specific pipes
+    │   └── modules/         # Feature modules
+    ├── project.json         # Nx project configuration
+    └── tsconfig.json        # TypeScript config
 ```
 
-### Library Usage
+### Planned Services (same structure)
 
-Import shared libraries in your application code:
+> These services are planned but not yet created:
+
+- `user-service/` - User management service
+- `resume-service/` - Resume/CV management service
+- `interview-service/` - Mock interview service
+- `ai-service/` - AI gateway service
+- `storage-service/` - File storage service
+- `notification-service/` - Notification service
+
+## Shared Libraries (`shared/`)
+
+Reusable code shared across ALL applications:
+
+```
+shared/
+├── configs/                 # Bootstrap and app configuration
+├── constants/               # Shared constants and enums
+├── types/                   # Shared TypeScript types
+├── utils/                   # Utility functions
+├── middlewares/             # NestJS middlewares
+├── interceptors/            # NestJS interceptors
+├── guards/                  # NestJS guards
+├── decorators/              # Custom decorators
+└── pipes/                   # NestJS pipes
+```
+
+### Import Examples
 
 ```typescript
-import { SomeConstant } from '@libs/constants';
-import { SomeMiddleware } from '@libs/middlewares';
-import { someUtil } from '@libs/utils';
+// Shared libraries (cross-service)
+import { SomeConstant } from '@shared/constants';
+import { SomeMiddleware } from '@shared/middlewares';
+import { someUtil } from '@shared/utils';
+
+// App-specific code (within api-gateway only)
+import { Env } from '@api-gateway/common/config';
 ```
 
 ## Docker Configuration (`docker/`)

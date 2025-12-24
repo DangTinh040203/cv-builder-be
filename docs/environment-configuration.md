@@ -6,15 +6,19 @@ Each microservice has its own environment configuration with Joi validation.
 
 Each service manages its own environment variables in:
 
+> [!NOTE]
+> The `api-gateway` config module is currently **not implemented**. The structure below is the planned target.
+
 ```text
 apps/<service-name>/
 ├── src/
-│   └── config/
-│       ├── env.constant.ts    # Env enum with variable keys
-│       ├── env.schema.ts      # Joi validation schema
-│       ├── config.module.ts   # ConfigModule setup
-│       └── index.ts           # Exports
-└── .env.example               # Example env file
+│   └── common/
+│       └── configs/
+│           ├── env.constant.ts    # Env enum with variable keys
+│           ├── env.schema.ts      # Joi validation schema
+│           ├── config.module.ts   # ConfigModule setup
+│           └── index.ts           # Exports
+└── .env.example                   # Example env file
 ```
 
 ## Example: API Gateway
