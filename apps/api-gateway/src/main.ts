@@ -1,13 +1,13 @@
 import { AppModule } from '@api-gateway/app/app.module';
+import { bootstrapGateway } from '@api-gateway/bootstrap';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { bootstrapApplication } from '@shared/configs/index';
 import { ServiceName } from '@shared/constants/index';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
-void bootstrapApplication(
+void bootstrapGateway(
   {
     appModule: AppModule,
     serviceName: ServiceName.API_GATEWAY,
@@ -30,14 +30,7 @@ void bootstrapApplication(
     interceptors: [],
     microservices: [],
     enableShutdownHooks: true,
-    swagger: {
-      title: 'CV Builder API',
-      description: 'API documentation for CV Builder backend services',
-      version: '1.0',
-      path: 'docs',
-    },
   },
-  // ConfigResolver - called after app creation with access to ConfigService
   (app) => {
     const configService = app.get(ConfigService);
     return {
