@@ -13,7 +13,6 @@ be/
 ├── dist/                    # Build output (git-ignored)
 ├── node_modules/            # Dependencies (git-ignored)
 ├── .husky/                  # Git hooks
-├── .vscode/                 # VS Code settings
 ├── nx.json                  # Nx workspace configuration
 ├── package.json             # Project dependencies
 ├── tsconfig.base.json       # Base TypeScript configuration
@@ -80,8 +79,7 @@ apps/api-gateway/
 │   └── modules/
 │       └── user/            # User feature (TCP client to user-service)
 │           ├── user.module.ts
-│           ├── user.controller.ts
-│           └── user-client.module.ts
+│           └── user.controller.ts
 ├── .env
 └── ...
 ```
@@ -173,6 +171,7 @@ import { UserService } from '@user-service/modules/user/user.service';
 
 ```
 docker/
+├── data/                    # Docker volumes data (git-ignored)
 ├── docker-compose.dev.yml   # Development environment services
 ├── docker-compose.prod.yml  # Production environment services
 └── Dockerfile               # Application Dockerfile
