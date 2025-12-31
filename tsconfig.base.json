@@ -22,7 +22,8 @@
       "@shared/types/*": ["shared/types/src/*"],
       "@shared/guards/*": ["shared/guards/src/*"],
       "@shared/decorators/*": ["shared/decorators/src/*"],
-      "@shared/pipes/*": ["shared/pipes/src/*"]
+      "@shared/pipes/*": ["shared/pipes/src/*"],
+      "@shared/contracts/*": ["shared/contracts/src/*"]
     },
     "ignoreDeprecations": "5.0"
   },

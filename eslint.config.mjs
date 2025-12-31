@@ -161,7 +161,13 @@ export default tseslint.config(
       'no-restricted-imports': [
         'error',
         {
-          patterns: ['../**', './**'],
+          patterns: [
+            {
+              group: ['../**', './**'],
+              message:
+                'Relative imports are not allowed. Please use path aliases instead.',
+            },
+          ],
         },
       ],
       'no-console': 'warn',
@@ -176,6 +182,12 @@ export default tseslint.config(
           },
         },
       ],
+    },
+  },
+  {
+    files: ['shared/contracts/**/*.ts'],
+    rules: {
+      'no-restricted-imports': 'off',
     },
   },
 );
