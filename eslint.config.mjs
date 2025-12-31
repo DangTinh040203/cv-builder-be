@@ -184,10 +184,4 @@ export default tseslint.config(
       ],
     },
   },
-  {
-    files: ['shared/contracts/**/*.ts'],
-    rules: {
-      'no-restricted-imports': 'off',
-    },
-  },
 );

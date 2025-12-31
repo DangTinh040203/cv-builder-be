@@ -1,1 +1,1 @@
-export * from './user';
+export * from '@shared/contracts/user/index';

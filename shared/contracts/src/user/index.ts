@@ -1,2 +1,2 @@
-export * from './dtos/get-user.dto';
-export * from './user.patterns';
+export * from '@shared/contracts/user/dtos/get-user.dto';
+export * from '@shared/contracts/user/user.patterns';
