@@ -81,8 +81,15 @@ export async function bootstrapGateway(
 
   await app.listen(port);
 
+  const defaultVersion =
+    typeof versioning.defaultVersion === 'string'
+      ? versioning.defaultVersion
+      : Array.isArray(versioning.defaultVersion)
+        ? versioning.defaultVersion[0]
+        : '1';
+
   Logger.log(
-    `🚀 ${serviceName} is running on: http://localhost:${port}/${globalPrefix}`,
+    `🚀 ${serviceName} is running on: http://localhost:${port}/${globalPrefix}/v${String(defaultVersion)}`,
     serviceName,
   );
 

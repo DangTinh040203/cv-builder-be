@@ -1,5 +1,6 @@
 import { AppModule } from '@api-gateway/app/app.module';
 import { bootstrapGateway } from '@api-gateway/bootstrap';
+import { Env } from '@api-gateway/common/constants/env.constant';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ServiceName } from '@shared/constants/index';
@@ -34,13 +35,13 @@ void bootstrapGateway(
   (app) => {
     const configService = app.get(ConfigService);
     return {
-      port: configService.get<number>('PORT', 3000),
+      port: configService.getOrThrow<number>(Env.PORT),
       versioning: {
         type: VersioningType.URI,
         defaultVersion: '1',
       },
       cors: {
-        origin: configService.get<string>('FRONTEND_ORIGIN', '*'),
+        origin: configService.getOrThrow<string>(Env.FRONTEND_ORIGIN),
         credentials: true,
       },
     };

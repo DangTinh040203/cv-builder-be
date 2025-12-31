@@ -33,7 +33,6 @@ export default tseslint.config(
       'node_modules/**',
       'dist/**',
       '.nx/**',
-      'mongodb_data',
       'logs',
       '**/*.js',
     ],
@@ -44,21 +43,13 @@ export default tseslint.config(
 
   ...compat.extends(
     'prettier',
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
     'plugin:prettier/recommended',
   ),
 
-  ...compat.plugins(
-    'immer',
-    'import',
-    'simple-import-sort',
-    '@typescript-eslint',
-  ),
+  ...compat.plugins('immer', 'import', 'simple-import-sort'),
 
   // Boundaries plugin configuration
   {
@@ -137,6 +128,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-assignment': 0,
       '@typescript-eslint/no-unsafe-call': 0,
       'import/no-unresolved': 0,
+      'no-unused-vars': 'off',
 
       '@typescript-eslint/await-thenable': 'warn',
       '@typescript-eslint/no-unsafe-member-access': 'warn',

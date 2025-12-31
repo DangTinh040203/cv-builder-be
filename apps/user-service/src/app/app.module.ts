@@ -1,7 +1,7 @@
-import { validationSchema } from '@api-gateway/common/configs/env.config';
-import { UserModule } from '@api-gateway/modules/user/user.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { validationSchema } from '@user-service/common/configs/env.config';
+import { UserModule } from '@user-service/modules/user/user.module';
 
 @Module({
   imports: [
