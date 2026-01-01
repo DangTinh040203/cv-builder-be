@@ -9,9 +9,9 @@ services:
     ports:
       - '5432:5432'
     environment:
+      POSTGRES_DB: cv_builder_user_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: cv_builder
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     healthcheck:
@@ -19,6 +19,25 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - cv-builder-network
+
+  # pgAdmin - PostgreSQL Management Tool
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: cv-builder-pgadmin
+    restart: unless-stopped
+    ports:
+      - '5050:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - cv-builder-network
 
@@ -79,44 +98,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - cv-builder-network
-
-  # Keycloak Identity and Access Management
-  keycloak:
-    image: quay.io/keycloak/keycloak:24.0
-    container_name: cv-builder-keycloak
-    restart: unless-stopped
-    ports:
-      - '8080:8080'
-    environment:
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/cv_builder
-      KC_DB_USERNAME: postgres
-      KC_DB_PASSWORD: postgres
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_PORT: 8080
-      KC_HOSTNAME_STRICT: false
-      KC_HOSTNAME_STRICT_HTTPS: false
-      KC_LOG_LEVEL: info
-      KC_METRICS_ENABLED: true
-      KC_HEALTH_ENABLED: true
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    command: start-dev
-    depends_on:
-      postgres:
-        condition: service_healthy
-    healthcheck:
-      test:
-        [
-          'CMD-SHELL',
-          'exec 3<>/dev/tcp/127.0.0.1/8080;echo -e "GET /health/ready HTTP/1.1\r\nhost: 127.0.0.1:8080\r\nConnection: close\r\n\r\n" >&3;grep -q "200 OK" <&3',
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
     networks:
       - cv-builder-network
 
