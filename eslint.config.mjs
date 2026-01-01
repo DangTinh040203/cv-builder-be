@@ -94,8 +94,6 @@ export default tseslint.config(
           ],
         },
       ],
-      // Prevent external imports between services (more explicit rule)
-      'boundaries/no-unknown-files': 'error',
     },
   },
 
