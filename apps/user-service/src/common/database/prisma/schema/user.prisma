@@ -1,12 +1,17 @@
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+enum UserProvider {
+  CLERK
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean? @default(false)
+model User {
+  id         String       @id @default(uuid())
+  providerId String
+  provider   UserProvider
+  firstName  String
+  lastName   String
+  email      String       @unique
+  avatar     String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@map("users")
 }

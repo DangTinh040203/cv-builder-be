@@ -52,5 +52,4 @@ docker/data
 
 # Prisma
 **/generated/prisma
-**/prisma/migrations
 generated

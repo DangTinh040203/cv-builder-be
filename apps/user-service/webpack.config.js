@@ -21,4 +21,10 @@ module.exports = {
       sourceMap: true,
     }),
   ],
+  ignoreWarnings: [
+    {
+      module: /node_modules\/pg\/lib\/native/,
+      message: /Can't resolve 'pg-native'/,
+    },
+  ],
 };

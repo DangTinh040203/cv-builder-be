@@ -1,8 +1,10 @@
+import { Env } from '@api-gateway/common/constants/env.constant';
 import Joi from 'joi';
 
 export const validationSchema = Joi.object({
-  PORT: Joi.number().required(),
-  FRONTEND_ORIGIN: Joi.string().required(),
-  USER_SERVICE_HOST: Joi.string().required(),
-  USER_SERVICE_PORT: Joi.number().required(),
+  [Env.PORT]: Joi.number().required(),
+  [Env.FRONTEND_ORIGIN]: Joi.string().required(),
+  [Env.USER_SERVICE_HOST]: Joi.string().required(),
+  [Env.USER_SERVICE_PORT]: Joi.number().required(),
+  [Env.CLERK_WEBHOOK_SECRET]: Joi.string().required(),
 });
