@@ -1,0 +1,19 @@
+{
+  "name": "@be/user-service",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:migrate:reset": "prisma migrate reset",
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "prisma db seed"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.2.0"
+  },
+  "devDependencies": {
+    "prisma": "^7.2.0"
+  }
+}

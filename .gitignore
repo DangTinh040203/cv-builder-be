@@ -49,3 +49,8 @@ docker/data
 .env.local
 .env.*.local
 !.env.example
+
+# Prisma
+**/generated/prisma
+**/prisma/migrations
+generated

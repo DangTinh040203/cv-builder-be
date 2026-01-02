@@ -50,15 +50,50 @@ pnpm run build:all
 
 ### Available Scripts
 
-| Script               | Description                 |
-| -------------------- | --------------------------- |
-| `pnpm run build`     | Build a specific app        |
-| `pnpm run build:all` | Build all apps              |
-| `pnpm run serve`     | Start a specific app        |
-| `pnpm run serve:all` | Start all apps              |
-| `pnpm run lint`      | Run ESLint                  |
-| `pnpm run lint:fix`  | Run ESLint with auto-fix    |
-| `pnpm run dev:setup` | Start Docker infrastructure |
+#### 🌐 Global Scripts (All Services)
+
+Run these from the **root directory**:
+
+| Script                | Description                      |
+| --------------------- | -------------------------------- |
+| `pnpm run build`      | Build a specific app             |
+| `pnpm run build:all`  | Build all apps                   |
+| `pnpm run serve`      | Start a specific app in dev mode |
+| `pnpm run serve:all`  | Start all apps in dev mode       |
+| `pnpm run lint`       | Run ESLint on entire workspace   |
+| `pnpm run lint:fix`   | Run ESLint with auto-fix         |
+| `pnpm run dev:setup`  | Start Docker infrastructure      |
+| `pnpm run docs:serve` | Serve documentation (port 4000)  |
+
+#### 📦 Service-Specific Scripts
+
+##### API Gateway
+
+No service-specific scripts (uses global scripts only).
+
+##### User Service
+
+Run these from **root directory** with prefix or **cd into `apps/user-service`**:
+
+| Script                           | Description                           |
+| -------------------------------- | ------------------------------------- |
+| `pnpm run prisma:generate`       | Generate Prisma Client                |
+| `pnpm run prisma:migrate`        | Create and apply migration (dev)      |
+| `pnpm run prisma:migrate:deploy` | Deploy migrations (production)        |
+| `pnpm run prisma:migrate:reset`  | Reset database and reapply migrations |
+| `pnpm run prisma:studio`         | Open Prisma Studio GUI                |
+| `pnpm run prisma:seed`           | Seed database with initial data       |
+
+**Examples:**
+
+```bash
+# From root directory
+cd apps/user-service
+pnpm run prisma:generate
+
+# Or with NX from root
+pnpm nx run user-service:prisma:generate
+```
 
 ---
 
@@ -109,6 +144,32 @@ npx nx g @nx/node:lib <lib-name>
 ```bash
 npx nx graph
 ```
+
+### Database Management (Prisma)
+
+Prisma is configured per-service. For **User Service**, use the scripts defined in `apps/user-service/package.json`.
+
+See [Service-Specific Scripts](#-service-specific-scripts) section above for all available Prisma commands.
+
+**Quick Reference:**
+
+```bash
+cd apps/user-service
+
+# Generate Prisma Client after schema changes
+pnpm run prisma:generate
+
+# Create and apply migration
+pnpm run prisma:migrate
+
+# Open Prisma Studio GUI
+pnpm run prisma:studio
+```
+
+**Note**: Each microservice has its own Prisma configuration located at:
+
+- `apps/<service-name>/src/common/database/prisma.config.ts`
+- `apps/<service-name>/src/common/database/prisma/schema/`
 
 ---
 
