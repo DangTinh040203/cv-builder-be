@@ -22,5 +22,6 @@ import { ServiceName } from '@shared/constants/index';
     ]),
   ],
   controllers: [UserController],
+  exports: [ClientsModule],
 })
 export class UserModule {}

@@ -126,10 +126,10 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-assignment': 0,
       '@typescript-eslint/no-unsafe-call': 0,
       'import/no-unresolved': 0,
+      '@typescript-eslint/no-unsafe-member-access': 0,
       'no-unused-vars': 'off',
 
       '@typescript-eslint/await-thenable': 'warn',
-      '@typescript-eslint/no-unsafe-member-access': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
       'import/namespace': 'warn',
       'import/no-duplicates': 'warn',
