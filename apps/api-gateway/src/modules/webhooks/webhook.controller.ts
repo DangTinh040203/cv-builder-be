@@ -12,6 +12,7 @@ import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { ServiceName } from '@shared/constants/service-name.constant';
 import { ClerkUserWebhook } from '@shared/constants/webhook.constant';
+import { CreateUserDto } from '@shared/contracts/user/dtos/create-user.dto';
 import { ClerkWebhookPatterns } from '@shared/contracts/user/user.patterns';
 import { ClerkWebhook } from '@shared/types/index';
 import { Webhook } from 'svix';
@@ -50,7 +51,17 @@ export class WebhooksController implements OnModuleInit {
 
       switch (evt.type) {
         case ClerkUserWebhook.USER_CREATED: {
-          this.userClient.emit(ClerkWebhookPatterns.USER_CREATED, evt.data);
+          const clerkPayloadData = evt.data;
+          const payload: CreateUserDto = {
+            avatar: clerkPayloadData.image_url,
+            provider: 'CLERK',
+            email: clerkPayloadData.email_addresses[0].email_address,
+            providerId: clerkPayloadData.id,
+            firstName: clerkPayloadData.first_name,
+            lastName: clerkPayloadData.last_name,
+          };
+
+          this.userClient.emit(ClerkWebhookPatterns.USER_CREATED, payload);
           this.logger.log(
             '✅ Event emitted successfully :',
             ClerkWebhookPatterns.USER_CREATED,
