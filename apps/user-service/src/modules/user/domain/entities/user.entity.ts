@@ -1,14 +1,10 @@
-enum UserProvider {
-  CLERK,
-}
-
 export interface User {
   id: string;
   firstName: string;
   lastName: string;
   avatar: string;
   email: string;
-  provider: UserProvider;
+  provider: string;
   providerId: string;
   createdAt: Date;
   updatedAt: Date;

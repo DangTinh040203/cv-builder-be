@@ -1,5 +1,5 @@
 import { Env } from '@api-gateway/common/constants/env.constant';
-import { UserController } from '@api-gateway/modules/user/user.controller';
+import { UserController } from '@api-gateway/modules/user/presentation/controllers/user.controller';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';

@@ -52,47 +52,80 @@ function processData(data: UserData): ProcessedData {
 
 ## NestJS Conventions
 
-### File Naming
+### Modular Clean Architecture
+
+We follow **Vertical Slicing** where each feature module contains its full stack:
 
 ```
-feature/
-├── feature.module.ts        # Module definition
-├── feature.controller.ts    # HTTP endpoints
-├── feature.service.ts       # Business logic
-├── feature.repository.ts    # Data access
-├── dto/
-│   ├── create-feature.dto.ts
-│   └── update-feature.dto.ts
-├── entities/
-│   └── feature.entity.ts
-└── interfaces/
-    └── feature.interface.ts
+modules/<feature>/
+├── domain/                     # Pure logic, no framework
+│   ├── entities/
+│   │   └── <feature>.entity.ts # Domain entities (plain interfaces)
+│   └── ports/
+│       └── <feature>.repository.ts  # Interfaces (IRepository)
+├── application/                # Use cases / Services
+│   └── use-cases/
+│       └── <feature>.service.ts     # Business logic
+├── infrastructure/             # Implementation (DB, external)
+│   ├── adapters/
+│   │   └── prisma-<feature>.repository.ts  # Implements ports
+│   └── database/               # Prisma, migrations (if module-specific)
+├── presentation/               # API Layer
+│   └── controllers/
+│       └── <feature>.controller.ts
+└── <feature>.module.ts         # Wire everything together
 ```
+
+### Layer Rules
+
+| Layer              | What Goes Here               | Can Import From       |
+| ------------------ | ---------------------------- | --------------------- |
+| **Domain**         | Entities, Interfaces (Ports) | Nothing (pure TS)     |
+| **Application**    | Use Cases, Services          | Domain only           |
+| **Infrastructure** | Repository implementations   | Domain, external libs |
+| **Presentation**   | Controllers, DTOs            | Application, Domain   |
 
 ### Module Structure
 
 ```typescript
-// feature.module.ts
+// modules/user/user.module.ts
+import { Module } from '@nestjs/common';
+import { UserService } from './application/use-cases/user.service';
+import { UserController } from './presentation/controllers/user.controller';
+import { USER_REPOSITORY_TOKEN } from './domain/ports/user.repository';
+import { PrismaUserRepository } from './infrastructure/adapters/prisma-user.repository';
+
 @Module({
-  imports: [
-    // External modules
+  controllers: [UserController],
+  providers: [
+    UserService,
+    {
+      provide: USER_REPOSITORY_TOKEN, // Interface token
+      useClass: PrismaUserRepository, // Implementation
+    },
   ],
-  controllers: [FeatureController],
-  providers: [FeatureService, FeatureRepository],
-  exports: [FeatureService],
+  exports: [UserService],
 })
-export class FeatureModule {}
+export class UserModule {}
 ```
 
-### Dependency Injection
+### Dependency Injection with Interfaces
 
 ```typescript
-// ✅ Good - Constructor injection
+// ✅ Good - Inject via interface token
 @Injectable()
 export class UserService {
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly cacheService: CacheService,
+    @Inject(USER_REPOSITORY_TOKEN)
+    private readonly userRepository: IUserRepository,
+  ) {}
+}
+
+// ❌ Bad - Direct implementation injection
+@Injectable()
+export class UserService {
+  constructor(
+    private readonly userRepository: PrismaUserRepository, // Breaks abstraction!
   ) {}
 }
 ```
