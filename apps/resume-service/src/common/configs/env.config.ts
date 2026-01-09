@@ -1,0 +1,8 @@
+import Joi from 'joi';
+
+export const validationSchema = Joi.object({
+  TCP_HOST: Joi.string().required(),
+  TCP_PORT: Joi.number().required(),
+  NODE_ENV: Joi.string().valid('development', 'production', 'test').required(),
+  MONGODB_URI: Joi.string().required(),
+});

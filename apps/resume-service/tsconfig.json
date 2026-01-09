@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": ["prisma.config.ts"],
+  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "paths": {
+      "@resume-service/*": ["../../apps/resume-service/src/*"],
+      "@shared/constants/*": ["../../shared/constants/src/*"],
+      "@shared/configs/*": ["../../shared/configs/src/*"],
+      "@shared/interceptors/*": ["../../shared/interceptors/src/*"],
+      "@shared/middlewares/*": ["../../shared/middlewares/src/*"],
+      "@shared/utils/*": ["../../shared/utils/src/*"],
+      "@shared/types/*": ["../../shared/types/src/*"],
+      "@shared/guards/*": ["../../shared/guards/src/*"],
+      "@shared/decorators/*": ["../../shared/decorators/src/*"],
+      "@shared/pipes/*": ["../../shared/pipes/src/*"],
+      "@shared/contracts/*": ["../../shared/contracts/src/*"]
+    }
+  }
+}
