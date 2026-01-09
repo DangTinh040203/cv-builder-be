@@ -57,6 +57,21 @@ Or start a specific service:
 pnpm run serve api-gateway
 ```
 
+### 6. Set Up ngrok for Clerk Webhooks
+
+To receive webhooks from Clerk during local development, you need to expose your local API Gateway using `ngrok`.
+
+1. **Install ngrok** from [ngrok.com](https://ngrok.com/download).
+2. **Start the tunnel**:
+
+   ```bash
+   ngrok http 3000
+   ```
+
+   _(Assuming API Gateway runs on port 3000)_
+
+3. **Configure Clerk**: Copy the HTTPS URL provided by ngrok and update the Webhook Endpoint in your Clerk Dashboard.
+
 ## Available Scripts
 
 | Script                | Description                     |
@@ -85,19 +100,19 @@ When running `pnpm run dev:setup`, the following services are started:
 
 ## Generating New Apps/Libraries
 
-### Create a new NestJS application:
+### Create a new NestJS application
 
 ```bash
 npx nx g @nx/nest:app <app-name>
 ```
 
-### Create a new library:
+### Create a new library
 
 ```bash
 npx nx g @nx/node:lib <lib-name>
 ```
 
-### View the project dependency graph:
+### View the project dependency graph
 
 ```bash
 npx nx graph
