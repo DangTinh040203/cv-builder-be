@@ -15,6 +15,8 @@ import { ServiceName } from '@shared/constants/index';
           options: {
             host: configService.getOrThrow<string>(Env.USER_SERVICE_HOST),
             port: configService.getOrThrow<number>(Env.USER_SERVICE_PORT),
+            retryAttempts: 3,
+            retryDelay: 2000,
           },
         }),
         inject: [ConfigService],
