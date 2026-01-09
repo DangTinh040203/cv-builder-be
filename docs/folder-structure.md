@@ -227,27 +227,7 @@ docker/
 
 ## How to Use This Structure
 
-### 1. Creating a New Feature Module
-
-Use the generator script to create new modules with the full structure:
-
-```bash
-./scripts/generate-module.sh <service-name> <module-name>
-
-# Example: Create a "resume" module in user-service
-./scripts/generate-module.sh user-service resume
-```
-
-The script generates:
-
-- `domain/entities/<module>.entity.ts` - Entity interface
-- `domain/ports/<module>.repository.ts` - Repository interface + token
-- `application/use-cases/<module>.service.ts` - Service with DI
-- `infrastructure/adapters/prisma-<module>.repository.ts` - Prisma implementation with `toDomain()` mapper
-- `presentation/controllers/<module>.controller.ts` - REST controller
-- `<module>.module.ts` - NestJS module wiring
-
-### 2. Layer Responsibilities
+### 1. Layer Responsibilities
 
 | Layer              | What Goes Here                               | Can Import From           |
 | ------------------ | -------------------------------------------- | ------------------------- |

@@ -101,6 +101,21 @@ services:
     networks:
       - cv-builder-network
 
+  # MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: cv-builder-mongodb
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./data/mongodb:/data/db
+    networks:
+      - cv-builder-network
+
 networks:
   cv-builder-network:
     driver: bridge
