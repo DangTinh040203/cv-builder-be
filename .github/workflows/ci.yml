@@ -33,5 +33,8 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Generate Prisma Client
+        run: cd apps/user-service && pnpm prisma:generate
+
       - name: Build
         run: pnpm build:all
